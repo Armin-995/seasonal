@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's in season?</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Abstract nature background elements -->
+    <div class="background-elements">
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="floating-circle circle-3"></div>
+        <div class="floating-circle circle-4"></div>
+        <div class="organic-shape shape-1"></div>
+        <div class="organic-shape shape-2"></div>
+        <div class="organic-shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="hero">
+            <h1 class="main-title">Was hat die Natur heute zu bieten?</h1>
+            <div class="controls">
+                <div class="country-selector">
+                    <label for="country">Land:</label>
+                    <select id="country" name="country">
+                        <option value="germany">Deutschland</option>
+                    </select>
+                </div>
+                <div class="month-selector">
+                    <label for="month">Aktueller Monat:</label>
+                    <select id="month" name="month">
+                        <option value="1">Januar</option>
+                        <option value="2">Februar</option>
+                        <option value="3">März</option>
+                        <option value="4">April</option>
+                        <option value="5">Mai</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Dezember</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <div class="items-table-container" id="items-table-container">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Entdecke die natürliche Fülle um dich herum</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/armin.flowing" target="_blank" class="social-link">
+                        <span class="social-icon">📷</span>
+                        Instagram
+                    </a>
+                    
+                </div>
+                <a href="admin.html" class="admin-link">Admin</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
