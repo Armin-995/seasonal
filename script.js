@@ -21,7 +21,7 @@ Supabase Configuration:
 
 The start and end fields should contain numeric month values (1-12):
 - Single month: start=9, end=9 (September only)
-- Month range: start=7, end=9 (July through September)
+- Month range: start=7, end=9 (July through September) 
 - Year-round: start=1, end=12 (Available all year)
 - Cross-year range: start=11, end=2 (November through February)
 
@@ -438,8 +438,6 @@ function createItemsTable(items) {
                     <th>Reifezeitpunkt</th>
                     <th>Standort</th>
                     <th>Warum sammeln?</th>
-                    <th>Bild 1</th>
-                    <th>Bild 2</th>
                 </tr>
             </thead>
             <tbody>
