@@ -1,152 +1,45 @@
 // Storage key for seasonal items
 const STORAGE_KEY = 'seasonal_items';
 
-// German seasonal items data by month
-const germanItems = {
-    1: [ // Januar
-        { name: 'Wacholderbeeren', category: 'Fruits', ripeness: 'Ganzjährig', location: 'Heidegebiete, Kiefernwälder', whyCollect: 'Für Gin, Gewürze und Heilmittel', images: ['https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400', 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'] },
-        { name: 'Fichtennadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Nadelwälder', whyCollect: 'Vitamin C, Tee, Hustensaft' },
-        { name: 'Birkenwasser', category: 'Herbs', ripeness: 'Frühjahr', location: 'Birkenwälder', whyCollect: 'Entgiftung, Mineralstoffe' },
-        { name: 'Efeu', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Wälder, Mauern', whyCollect: 'Hustentee, äußerliche Anwendung' },
-        { name: 'Kiefernnadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Kiefernwälder', whyCollect: 'Tee, Badezusatz, Inhalation' },
-        { name: 'Mistel', category: 'Herbs', ripeness: 'Winter', location: 'Laubbäume', whyCollect: 'Blutdrucksenkend, Immunsystem' },
-        { name: 'Tannenknospen', category: 'Herbs', ripeness: 'Frühjahr', location: 'Tannenwälder', whyCollect: 'Hustensaft, Erkältung' },
-        { name: 'Lärchennadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Lärchenwälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Eichenrinde', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Eichenwälder', whyCollect: 'Gerbstoffe, Hautpflege' },
-        { name: 'Weidenrinde', category: 'Herbs', ripeness: 'Frühjahr', location: 'Weidenbestände', whyCollect: 'Schmerzmittel, Fieber' }
-    ],
-    2: [ // Februar
-        { name: 'Haselnussblüten', category: 'Herbs', ripeness: 'Februar-März', location: 'Haselsträucher', whyCollect: 'Frühblüher, Pollen für Bienen' },
-        { name: 'Erlenkätzchen', category: 'Herbs', ripeness: 'Februar-März', location: 'Erlenbestände', whyCollect: 'Frühblüher, Pollen' },
-        { name: 'Weidenkätzchen', category: 'Herbs', ripeness: 'Februar-März', location: 'Weidenbestände', whyCollect: 'Frühblüher, Salicylsäure' },
-        { name: 'Schneeglöckchen', category: 'Herbs', ripeness: 'Februar-März', location: 'Gärten, Parks', whyCollect: 'Frühblüher, Zierde' },
-        { name: 'Krokus', category: 'Herbs', ripeness: 'Februar-März', location: 'Gärten, Wiesen', whyCollect: 'Frühblüher, Safran-Ersatz' },
-        { name: 'Winterlinge', category: 'Herbs', ripeness: 'Februar-März', location: 'Gärten, Parks', whyCollect: 'Frühblüher, Zierde' },
-        { name: 'Christrosen', category: 'Herbs', ripeness: 'Winter-Frühjahr', location: 'Gärten, Parks', whyCollect: 'Winterblüher, Zierde' },
-        { name: 'Mahonien', category: 'Herbs', ripeness: 'Februar-März', location: 'Gärten, Parks', whyCollect: 'Frühblüher, Vitamin C' },
-        { name: 'Zaubernuss', category: 'Herbs', ripeness: 'Winter-Frühjahr', location: 'Gärten, Parks', whyCollect: 'Winterblüher, Hautpflege' },
-        { name: 'Kornelkirsche', category: 'Herbs', ripeness: 'Februar-März', location: 'Hecken, Gärten', whyCollect: 'Frühblüher, später Früchte' }
-    ],
-    3: [ // März
-        { name: 'Bärlauch', category: 'Herbs', ripeness: 'März-Mai', location: 'Laubwälder', whyCollect: 'Knoblauchgeschmack, Vitamin C' },
-        { name: 'Löwenzahn', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Gärten', whyCollect: 'Vitamin C, Bitterstoffe, Tee' },
-        { name: 'Brennnessel', category: 'Herbs', ripeness: 'März-September', location: 'Überall', whyCollect: 'Eisen, Vitamin C, Tee' },
-        { name: 'Giersch', category: 'Herbs', ripeness: 'März-Oktober', location: 'Gärten, Hecken', whyCollect: 'Vitamin C, Petersilie-Ersatz' },
-        { name: 'Gundermann', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Hecken', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Scharbockskraut', category: 'Herbs', ripeness: 'März-April', location: 'Wälder, Wiesen', whyCollect: 'Vitamin C, Skorbut-Vorbeugung' },
-        { name: 'Huflattich', category: 'Herbs', ripeness: 'März-April', location: 'Böschungen, Wegränder', whyCollect: 'Husten, Bronchitis' },
-        { name: 'Vogelmiere', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Gärten, Wiesen', whyCollect: 'Vitamin C, Salat, Spinat-Ersatz' },
-        { name: 'Gänseblümchen', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Gärten', whyCollect: 'Vitamin C, Tee, Salat' },
-        { name: 'Sauerampfer', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, säuerlicher Geschmack' }
-    ],
-    4: [ // April
-        { name: 'Waldmeister', category: 'Herbs', ripeness: 'April-Mai', location: 'Laubwälder', whyCollect: 'Maibowle, Beruhigungsmittel' },
-        { name: 'Gundelrebe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Hecken', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Spitzwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung, Insektenstiche' },
-        { name: 'Breitwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Schafgarbe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Blutstillend, Verdauung' },
-        { name: 'Wiesenkerbel', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, Petersilie-Ersatz' },
-        { name: 'Wiesenbärenklau', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, Petersilie-Ersatz' },
-        { name: 'Wiesenknopf', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Wiesenmargerite', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Zierde, Tee' },
-        { name: 'Wiesenkümmel', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Verdauung, Gewürz' }
-    ],
-    5: [ // Mai
-        { name: 'Maiglöckchen', category: 'Herbs', ripeness: 'Mai', location: 'Laubwälder', whyCollect: 'Zierde, Duft (Vorsicht: giftig!)' },
-        { name: 'Waldmeister', category: 'Herbs', ripeness: 'April-Mai', location: 'Laubwälder', whyCollect: 'Maibowle, Beruhigungsmittel' },
-        { name: 'Holunderblüten', category: 'Herbs', ripeness: 'Mai-Juni', location: 'Hecken, Wälder', whyCollect: 'Hustensaft, Tee, Sirup' },
-        { name: 'Lindenblüten', category: 'Herbs', ripeness: 'Mai-Juni', location: 'Alleen, Parks', whyCollect: 'Beruhigungsmittel, Tee' },
-        { name: 'Robinienblüten', category: 'Herbs', ripeness: 'Mai-Juni', location: 'Alleen, Parks', whyCollect: 'Duft, Tee (Vorsicht: giftig!)' },
-        { name: 'Flieder', category: 'Herbs', ripeness: 'Mai', location: 'Gärten, Parks', whyCollect: 'Duft, Zierde' },
-        { name: 'Löwenzahn', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Gärten', whyCollect: 'Vitamin C, Bitterstoffe, Tee' },
-        { name: 'Gänseblümchen', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Gärten', whyCollect: 'Vitamin C, Tee, Salat' },
-        { name: 'Sauerampfer', category: 'Herbs', ripeness: 'März-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, säuerlicher Geschmack' },
-        { name: 'Brennnessel', category: 'Herbs', ripeness: 'März-September', location: 'Überall', whyCollect: 'Eisen, Vitamin C, Tee' }
-    ],
-    6: [ // Juni
-        { name: 'Holunderblüten', category: 'Herbs', ripeness: 'Mai-Juni', location: 'Hecken, Wälder', whyCollect: 'Hustensaft, Tee, Sirup' },
-        { name: 'Lindenblüten', category: 'Herbs', ripeness: 'Mai-Juni', location: 'Alleen, Parks', whyCollect: 'Beruhigungsmittel, Tee' },
-        { name: 'Wildrose', category: 'Herbs', ripeness: 'Juni', location: 'Hecken, Wälder', whyCollect: 'Duft, Tee, später Hagebutten' },
-        { name: 'Kamille', category: 'Herbs', ripeness: 'Juni-August', location: 'Wiesen, Wegränder', whyCollect: 'Beruhigungsmittel, Tee' },
-        { name: 'Schafgarbe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Blutstillend, Verdauung' },
-        { name: 'Spitzwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung, Insektenstiche' },
-        { name: 'Breitwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Gundelrebe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Hecken', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Wiesenkerbel', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, Petersilie-Ersatz' },
-        { name: 'Wiesenbärenklau', category: 'Herbs', ripeness: 'April-Juni', location: 'Wiesen, Wegränder', whyCollect: 'Vitamin C, Petersilie-Ersatz' }
-    ],
-    7: [ // Juli
-        { name: 'Brombeeren', category: 'Fruits', ripeness: 'Juli-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Himbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Johannisbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Gärten, Hecken', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Stachelbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Gärten, Hecken', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Waldmeister', category: 'Herbs', ripeness: 'April-Mai', location: 'Laubwälder', whyCollect: 'Maibowle, Beruhigungsmittel' },
-        { name: 'Kamille', category: 'Herbs', ripeness: 'Juni-August', location: 'Wiesen, Wegränder', whyCollect: 'Beruhigungsmittel, Tee' },
-        { name: 'Schafgarbe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Blutstillend, Verdauung' },
-        { name: 'Spitzwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung, Insektenstiche' },
-        { name: 'Breitwegerich', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Wegränder', whyCollect: 'Husten, Wundheilung' },
-        { name: 'Gundelrebe', category: 'Herbs', ripeness: 'April-Oktober', location: 'Wiesen, Hecken', whyCollect: 'Husten, Wundheilung' }
-    ],
-    8: [ // August
-        { name: 'Brombeeren', category: 'Fruits', ripeness: 'Juli-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Himbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Johannisbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Gärten, Hecken', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Stachelbeeren', category: 'Fruits', ripeness: 'Juli-August', location: 'Gärten, Hecken', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Holunderbeeren', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Hustensaft' },
-        { name: 'Schlehen', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Likör' },
-        { name: 'Hagebutten', category: 'Fruits', ripeness: 'August-Oktober', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Ebereschen', category: 'Fruits', ripeness: 'August-September', location: 'Wälder, Parks', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Kornelkirschen', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Gärten', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Wildbirnen', category: 'Fruits', ripeness: 'August-September', location: 'Wälder, Hecken', whyCollect: 'Vitamin C, Marmelade' }
-    ],
-    9: [ // September
-        { name: 'Brombeeren', category: 'Fruits', ripeness: 'Juli-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' },
-        { name: 'Holunderbeeren', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Hustensaft' },
-        { name: 'Schlehen', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Likör' },
-        { name: 'Hagebutten', category: 'Fruits', ripeness: 'August-Oktober', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Ebereschen', category: 'Fruits', ripeness: 'August-September', location: 'Wälder, Parks', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Kornelkirschen', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Gärten', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Wildbirnen', category: 'Fruits', ripeness: 'August-September', location: 'Wälder, Hecken', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Wildäpfel', category: 'Fruits', ripeness: 'September-Oktober', location: 'Wälder, Hecken', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Walnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Gärten, Parks', whyCollect: 'Omega-3, Protein' },
-        { name: 'Haselnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Hecken, Gärten', whyCollect: 'Omega-3, Protein' }
-    ],
-    10: [ // Oktober
-        { name: 'Hagebutten', category: 'Fruits', ripeness: 'August-Oktober', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Wildäpfel', category: 'Fruits', ripeness: 'September-Oktober', location: 'Wälder, Hecken', whyCollect: 'Vitamin C, Marmelade' },
-        { name: 'Walnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Gärten, Parks', whyCollect: 'Omega-3, Protein' },
-        { name: 'Haselnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Hecken, Gärten', whyCollect: 'Omega-3, Protein' },
-        { name: 'Kastanien', category: 'Nuts', ripeness: 'Oktober-November', location: 'Wälder, Parks', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Eicheln', category: 'Nuts', ripeness: 'Oktober-November', location: 'Eichenwälder', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Bucheckern', category: 'Nuts', ripeness: 'Oktober-November', location: 'Buchenwälder', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Schlehen', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Likör' },
-        { name: 'Holunderbeeren', category: 'Fruits', ripeness: 'August-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Hustensaft' },
-        { name: 'Brombeeren', category: 'Fruits', ripeness: 'Juli-September', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Antioxidantien' }
-    ],
-    11: [ // November
-        { name: 'Kastanien', category: 'Nuts', ripeness: 'Oktober-November', location: 'Wälder, Parks', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Eicheln', category: 'Nuts', ripeness: 'Oktober-November', location: 'Eichenwälder', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Bucheckern', category: 'Nuts', ripeness: 'Oktober-November', location: 'Buchenwälder', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Walnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Gärten, Parks', whyCollect: 'Omega-3, Protein' },
-        { name: 'Haselnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Hecken, Gärten', whyCollect: 'Omega-3, Protein' },
-        { name: 'Hagebutten', category: 'Fruits', ripeness: 'August-Oktober', location: 'Hecken, Wälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Wacholderbeeren', category: 'Fruits', ripeness: 'Ganzjährig', location: 'Heidegebiete, Kiefernwälder', whyCollect: 'Für Gin, Gewürze und Heilmittel' },
-        { name: 'Fichtennadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Nadelwälder', whyCollect: 'Vitamin C, Tee, Hustensaft' },
-        { name: 'Efeu', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Wälder, Mauern', whyCollect: 'Hustentee, äußerliche Anwendung' },
-        { name: 'Kiefernnadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Kiefernwälder', whyCollect: 'Tee, Badezusatz, Inhalation' }
-    ],
-    12: [ // Dezember
-        { name: 'Wacholderbeeren', category: 'Fruits', ripeness: 'Ganzjährig', location: 'Heidegebiete, Kiefernwälder', whyCollect: 'Für Gin, Gewürze und Heilmittel' },
-        { name: 'Fichtennadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Nadelwälder', whyCollect: 'Vitamin C, Tee, Hustensaft' },
-        { name: 'Efeu', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Wälder, Mauern', whyCollect: 'Hustentee, äußerliche Anwendung' },
-        { name: 'Kiefernnadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Kiefernwälder', whyCollect: 'Tee, Badezusatz, Inhalation' },
-        { name: 'Mistel', category: 'Herbs', ripeness: 'Winter', location: 'Laubbäume', whyCollect: 'Blutdrucksenkend, Immunsystem' },
-        { name: 'Lärchennadeln', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Lärchenwälder', whyCollect: 'Vitamin C, Tee' },
-        { name: 'Eichenrinde', category: 'Herbs', ripeness: 'Ganzjährig', location: 'Eichenwälder', whyCollect: 'Gerbstoffe, Hautpflege' },
-        { name: 'Weidenrinde', category: 'Herbs', ripeness: 'Frühjahr', location: 'Weidenbestände', whyCollect: 'Schmerzmittel, Fieber' },
-        { name: 'Kastanien', category: 'Nuts', ripeness: 'Oktober-November', location: 'Wälder, Parks', whyCollect: 'Kohlenhydrate, Protein' },
-        { name: 'Walnüsse', category: 'Nuts', ripeness: 'September-Oktober', location: 'Gärten, Parks', whyCollect: 'Omega-3, Protein' }
-    ]
+/*
+SQL Database Structure Required:
+
+The application expects three tables: 'fruits', 'herbs', and 'nuts'
+Each table should have the following columns:
+- name (VARCHAR): The name of the item
+- reasons (TEXT): Why to collect this item
+- months (VARCHAR): Numeric month enumeration (e.g., "9", "9,10", "9-11", "9,10,11")
+- location (TEXT): Where to find this item
+
+API Endpoints Expected:
+- GET /api/fruits - Returns all fruits
+- GET /api/herbs - Returns all herbs  
+- GET /api/nuts - Returns all nuts
+
+The months field should contain numeric month values (1-12) and can include:
+- Single months: "9" (September)
+- Multiple months: "9,10" (September and October)
+- Month ranges: "9-11" (September through November)
+- Complex combinations: "9,10,11" or "3-5,9-11" (March-May and September-November)
+*/
+
+// Configuration for SQL data fetching
+const SQL_CONFIG = {
+    // Base URL for your SQL API endpoints
+    baseUrl: '/api',
+    // Table names for each category
+    tables: {
+        'Fruits': 'fruits',
+        'Herbs': 'herbs', 
+        'Nuts': 'nuts'
+    }
+};
+
+// Cache for storing fetched data
+const dataCache = {
+    fruits: new Map(),
+    herbs: new Map(),
+    nuts: new Map()
 };
 
 // Month names in German
@@ -154,6 +47,72 @@ const monthNames = {
     1: 'Januar', 2: 'Februar', 3: 'März', 4: 'April', 5: 'Mai', 6: 'Juni',
     7: 'Juli', 8: 'August', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Dezember'
 };
+
+// Helper function to check if a month number is in the months field
+function isMonthInRange(monthsString, targetMonth) {
+    if (!monthsString) return false;
+    
+    // Convert months string to array of numbers
+    // Expected format: "9" or "9,10" or "9-11" or "9,10,11"
+    const months = monthsString.toString().split(/[,\s]+/);
+    
+    for (const month of months) {
+        // Handle ranges like "9-11"
+        if (month.includes('-')) {
+            const [start, end] = month.split('-').map(m => parseInt(m.trim()));
+            if (targetMonth >= start && targetMonth <= end) {
+                return true;
+            }
+        } else {
+            // Handle single month numbers
+            const monthNum = parseInt(month.trim());
+            if (monthNum === targetMonth) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+// Fetch data from SQL for a specific category
+async function fetchCategoryData(category) {
+    const tableName = SQL_CONFIG.tables[category];
+    if (!tableName) {
+        console.error(`Unknown category: ${category}`);
+        return [];
+    }
+    
+    try {
+        const response = await fetch(`${SQL_CONFIG.baseUrl}/${tableName}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Cache the data
+        dataCache[tableName].set('all', data);
+        
+        return data;
+    } catch (error) {
+        console.error(`Error fetching ${category} data:`, error);
+        return [];
+    }
+}
+
+// Get cached data or fetch from SQL
+async function getCategoryData(category) {
+    const tableName = SQL_CONFIG.tables[category];
+    if (!tableName) return [];
+    
+    // Check cache first
+    if (dataCache[tableName].has('all')) {
+        return dataCache[tableName].get('all');
+    }
+    
+    // Fetch from SQL if not cached
+    return await fetchCategoryData(category);
+}
 
 // Generate placeholder images for items
 function generatePlaceholderImages(itemName, category) {
@@ -191,25 +150,72 @@ function generateDetailedContent(item) {
     return content;
 }
 
-// Add images to all items
-Object.keys(germanItems).forEach(month => {
-    germanItems[month] = germanItems[month].map(item => ({
-        ...item,
-        images: item.images || generatePlaceholderImages(item.name, item.category)
-    }));
-});
+// This function is now handled in the getItemsForMonth function
 
 // Get current month
 function getCurrentMonth() {
     return new Date().getMonth() + 1; // getMonth() returns 0-11, so add 1
 }
 
-// Get items for selected month and country
-function getItemsForMonth(month, country) {
-    if (country === 'germany') {
-        return germanItems[month] || [];
+// Get items for selected month, country and category from SQL
+async function getItemsForMonth(month, country, category = 'all') {
+    if (country !== 'germany') {
+        return [];
     }
-    return [];
+    
+    try {
+        let allItems = [];
+        
+        if (category === 'all') {
+            // Fetch data from all categories
+            const [fruits, herbs, nuts] = await Promise.all([
+                getCategoryData('Fruits'),
+                getCategoryData('Herbs'),
+                getCategoryData('Nuts')
+            ]);
+            allItems = [...fruits, ...herbs, ...nuts];
+        } else {
+            // Fetch data from specific category
+            allItems = await getCategoryData(category);
+        }
+        
+        // Filter items by month
+        const filteredItems = allItems.filter(item => {
+            return isMonthInRange(item.months, month);
+        });
+        
+        // Transform SQL data to expected format
+        return filteredItems.map(item => ({
+            name: item.name,
+            category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
+            ripeness: item.months || 'Unbekannt',
+            location: item.location || 'Unbekannt',
+            whyCollect: item.reasons || 'Unbekannt',
+            images: generatePlaceholderImages(item.name, getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category))
+        }));
+        
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        return [];
+    }
+}
+
+// Helper function to determine category from item data
+function getCategoryFromItem(item) {
+    // This would need to be implemented based on your SQL structure
+    // For now, we'll assume the category is determined by which table the item came from
+    // You might need to add a category field to your SQL tables or use a different approach
+    return 'Fruits'; // Default fallback
+}
+
+// Helper function to get category name from table name
+function getCategoryFromTableName(tableName) {
+    const categoryMap = {
+        'fruits': 'Fruits',
+        'herbs': 'Herbs',
+        'nuts': 'Nuts'
+    };
+    return categoryMap[tableName] || 'Fruits';
 }
 
 // Create image HTML for table
@@ -370,7 +376,6 @@ function createItemsTable(items) {
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Kategorie</th>
                     <th>Reifezeitpunkt</th>
                     <th>Standort</th>
                     <th>Warum sammeln?</th>
@@ -387,7 +392,6 @@ function createItemsTable(items) {
                                 ${item.name}
                             </a>
                         </td>
-                        <td><span class="item-category ${item.category.toLowerCase()}">${item.category}</span></td>
                         <td>${item.ripeness}</td>
                         <td>${item.location}</td>
                         <td>${item.whyCollect}</td>
@@ -404,27 +408,47 @@ function createItemsTable(items) {
 }
 
 // Update the display
-function updateDisplay() {
+async function updateDisplay() {
     const selectedMonth = parseInt(document.getElementById('month').value);
     const selectedCountry = document.getElementById('country').value;
+    const selectedCategory = document.getElementById('category').value;
     
-    const items = getItemsForMonth(selectedMonth, selectedCountry);
     const tableContainer = document.getElementById('items-table-container');
     
-    tableContainer.innerHTML = createItemsTable(items);
+    // Show loading state
+    tableContainer.innerHTML = `
+        <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Lade saisonale Produkte...</p>
+        </div>
+    `;
     
-    // Add entrance animations to table rows
-    const rows = tableContainer.querySelectorAll('tbody tr');
-    rows.forEach((row, index) => {
-        row.style.opacity = '0';
-        row.style.transform = 'translateY(20px)';
+    try {
+        const items = await getItemsForMonth(selectedMonth, selectedCountry, selectedCategory);
+        tableContainer.innerHTML = createItemsTable(items);
         
-        setTimeout(() => {
-            row.style.transition = 'all 0.4s ease';
-            row.style.opacity = '1';
-            row.style.transform = 'translateY(0)';
-        }, index * 50);
-    });
+        // Add entrance animations to table rows
+        const rows = tableContainer.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                row.style.transition = 'all 0.4s ease';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, index * 50);
+        });
+    } catch (error) {
+        console.error('Error updating display:', error);
+        tableContainer.innerHTML = `
+            <div class="error-state">
+                <div class="error-icon">⚠️</div>
+                <h2>Fehler beim Laden der Daten</h2>
+                <p>Bitte versuchen Sie es später erneut.</p>
+            </div>
+        `;
+    }
 }
 
 // Initialize the page
@@ -436,6 +460,7 @@ function initializePage() {
     // Add event listeners
     document.getElementById('month').addEventListener('change', updateDisplay);
     document.getElementById('country').addEventListener('change', updateDisplay);
+    document.getElementById('category').addEventListener('change', updateDisplay);
     
     // Initial display
     updateDisplay();

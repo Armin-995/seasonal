@@ -1,0 +1,24 @@
+-- Insert statements for Wildpflanzen (SQLite)
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Brennnessel', 'Wegränder, feuchte Böden, Wälder', 'eisen- & mineralstoffreich • vielseitig in Küche (Tee, Spinat) • stärkt Immunsystem', '4-10');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Giersch', 'schattige Wälder, feuchte Böschungen', 'vitaminreich • fördert Verdauung • weit verbreitet & leicht erkennbar', '3-11');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Bärlauch', 'feuchte Laubwälder, Auen', 'knoblauchartiges Aroma • Vitamin C • vielseitig in Pesto & Suppen', '3-5');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Gundermann', 'Waldränder, Hecken, feuchte Plätze', 'aromatisch • unterstützt Verdauung • würzt Salate & Kräuterbutter', '3-6');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Löwenzahn', 'Wiesen, Wegränder, Gärten', 'Bitterstoffe gut für Leber & Galle • essbar von Wurzel bis Blüte • sehr häufig', '3-7');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Waldmeister', 'schattige Laubwälder, moosige Böden', 'aromatisch (Cumarin) • traditionell in Maibowle • vielseitig in Süßspeisen', '4-6');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Vogelmiere', 'Gärten, Felder, Mauerritzen', 'mild im Geschmack • vitaminreich (C, Mineralien) • ganzjährig verfügbar', '3-9');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Knoblauchsrauke', 'Waldränder, Hecken, Wege', 'knoblauchartiges Aroma • reich an Vitaminen • würzt Salate & Dips', '3-6');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Sauerampfer', 'feuchte Wiesen, Ufer', 'erfrischend säuerlich • Vitamin C-Spender • beliebt in Suppen', '5-8');
+INSERT INTO wildkraeuter (name, standort, gruende, monate) VALUES ('Schafgarbe', 'Wiesen, Trockenrasen, Wegränder', 'heilkräftig (entzündungshemmend) • Tee & Würzkraut • essbare Blüten', '5-9');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Himbeeren (wild)', 'Waldränder, Lichtungen', 'süß-aromatisch • reich an Antioxidantien • gute Sommerfrucht', '6-8');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Brombeeren', 'Hecken, Waldränder, Böschungen', 'saftig-süß • Vitamin C und Mineralstoffe • vielseitig (roh, Marmelade)', '7-9');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Heidelbeeren', 'Moor- & Heidewälder, saure Böden', 'antioxidantienreich • aromatisch & gesund • beliebt frisch & gekocht', '6-9');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Holunderbeeren', 'Waldränder, Feldhecken', 'Vitamin C & sekundäre Pflanzenstoffe • gut für Säfte & Gelees • weit verbreitet', '9-10');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Schlehen', 'Hecken, Waldränder, Feldgehölze', 'sehr Vitamin C-reich • herber Geschmack (roh herb, gekocht mild) • gut für Likör, Marmelade', '10-11');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Hagebutten', 'Hecken, Waldränder, Feldränder', 'Vitamin-C-Bombe • lange haltbar (getrocknet, Tee) • vielseitig nutzbar', '9-12');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Sanddorn', 'Küstenregionen, Dünen, Flussauen', 'extrem Vitamin C-reich • intensiver Geschmack • vielseitig in Säften & Mus', '8-10');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Vogelbeeren (Eberesche)', 'Wälder, Hecken, Gebirge', 'reich an Bitterstoffen & Vitaminen • gekocht essbar (Marmeladen) • sehr häufig', '9-10');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Preiselbeeren', 'Moorwälder, Gebirge, Heide', 'säuerlich-aromatisch • Vitamin C & Antioxidantien • klassisch zu Wildgerichten', '8-9');
+INSERT INTO fruechte_beeren (name, standort, gruende, monate) VALUES ('Schwarzer Holunder (Blüten/Beeren)', 'Waldränder, feuchte Standorte', 'vielseitig (Sirup, Gelee) • immunstärkend • sehr häufig in DE', '5-6 (Blüten), 9-10 (Beeren)');
+INSERT INTO nuesse_huelsenfruechte (name, standort, gruende, monate) VALUES ('Haselnüsse', 'Hecken, Waldränder, Gartenbäume', 'gesunde Fette • proteinreich • lange lagerfähig', '9-10');
+INSERT INTO nuesse_huelsenfruechte (name, standort, gruende, monate) VALUES ('Walnüsse (Wildvorkommen)', 'Einzelne Waldbäume, Parks, Waldränder', 'reich an Omega-3 • hoher Nährwert • vielseitig nutzbar', '9-10');
+INSERT INTO nuesse_huelsenfruechte (name, standort, gruende, monate) VALUES ('Esskastanien', 'Wälder, Parks', 'stärkehaltig, nussig • traditionell geröstet • gute Energiequelle', '9-10');

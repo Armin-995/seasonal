@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What's in season?</title>
+    <title>TimeToGather - Ab in die Natur</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -21,7 +21,7 @@
 
     <div class="container">
         <header class="hero">
-            <h1 class="main-title">Was hat die Natur heute zu bieten?</h1>
+            <h1 class="main-title">Was du heute in deiner Region leckeres findest.</h1>
             <div class="controls">
                 <div class="country-selector">
                     <label for="country">Land:</label>
@@ -46,6 +46,15 @@
                         <option value="12">Dezember</option>
                     </select>
                 </div>
+                <div class="category-selector">
+                    <label for="category">Kategorie:</label>
+                    <select id="category" name="category">
+                        <option value="all">Alle Kategorien</option>
+                        <option value="Fruits" selected>Früchte</option>
+                        <option value="Herbs">Kräuter</option>
+                        <option value="Nuts">Nüsse</option>
+                    </select>
+                </div>
             </div>
         </header>
 
@@ -57,11 +66,11 @@
 
         <footer class="footer">
             <div class="footer-content">
-                <p>Entdecke die natürliche Fülle um dich herum</p>
+                <p>Schreib mir auf Instagram!</p>
                 <div class="social-links">
                     <a href="https://instagram.com/armin.flowing" target="_blank" class="social-link">
                         <span class="social-icon">📷</span>
-                        Instagram
+                        armin.flowing
                     </a>
                     
                 </div>
