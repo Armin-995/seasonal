@@ -2,31 +2,34 @@
 const STORAGE_KEY = 'seasonal_items';
 
 /*
-SQL Database Structure Required:
+Supabase Database Structure Required:
 
 The application expects three tables: 'fruits', 'herbs', and 'nuts'
 Each table should have the following columns:
 - name (VARCHAR): The name of the item
 - reasons (TEXT): Why to collect this item
-- months (VARCHAR): Numeric month enumeration (e.g., "9", "9,10", "9-11", "9,10,11")
+- start (INTEGER): First month of ripeness (1-12)
+- end (INTEGER): Last month of ripeness (1-12)
 - location (TEXT): Where to find this item
 
-API Endpoints Expected:
-- GET /api/fruits - Returns all fruits
-- GET /api/herbs - Returns all herbs  
-- GET /api/nuts - Returns all nuts
+Supabase Configuration:
+1. Replace 'YOUR_SUPABASE_URL' with your Supabase project URL
+2. Replace 'YOUR_SUPABASE_ANON_KEY' with your Supabase anon key
+3. Make sure your tables have Row Level Security (RLS) disabled or configured for public read access
 
-The months field should contain numeric month values (1-12) and can include:
-- Single months: "9" (September)
-- Multiple months: "9,10" (September and October)
-- Month ranges: "9-11" (September through November)
-- Complex combinations: "9,10,11" or "3-5,9-11" (March-May and September-November)
+The start and end fields should contain numeric month values (1-12):
+- Single month: start=9, end=9 (September only)
+- Month range: start=7, end=9 (July through September)
+- Year-round: start=1, end=12 (Available all year)
+- Cross-year range: start=11, end=2 (November through February)
 */
 
-// Configuration for SQL data fetching
-const SQL_CONFIG = {
-    // Base URL for your SQL API endpoints
-    baseUrl: '/api',
+// Configuration for Supabase data fetching
+const SUPABASE_CONFIG = {
+    // Your Supabase project URL (found in Project Settings > API)
+    url: 'https://iriqtgabcbgotbtcmwoi.supabase.co', // Replace with your actual Supabase URL
+    // Your Supabase anon key (found in Project Settings > API)
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyaXF0Z2FiY2Jnb3RidGNtd29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2OTQ5ODYsImV4cCI6MjA3MzI3MDk4Nn0.VuM3gsJhJ3Fz28bPgsOlvDfmfE2j_dPuT-B_4xJGhag', // Replace with your actual anon key
     // Table names for each category
     tables: {
         'Fruits': 'fruits',
@@ -48,46 +51,49 @@ const monthNames = {
     7: 'Juli', 8: 'August', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Dezember'
 };
 
-// Helper function to check if a month number is in the months field
-function isMonthInRange(monthsString, targetMonth) {
-    if (!monthsString) return false;
+// Helper function to check if a month is within the start and end range
+function isMonthInRange(startMonth, endMonth, targetMonth) {
+    if (!startMonth || !endMonth) return false;
     
-    // Convert months string to array of numbers
-    // Expected format: "9" or "9,10" or "9-11" or "9,10,11"
-    const months = monthsString.toString().split(/[,\s]+/);
+    const start = parseInt(startMonth);
+    const end = parseInt(endMonth);
     
-    for (const month of months) {
-        // Handle ranges like "9-11"
-        if (month.includes('-')) {
-            const [start, end] = month.split('-').map(m => parseInt(m.trim()));
-            if (targetMonth >= start && targetMonth <= end) {
-                return true;
-            }
-        } else {
-            // Handle single month numbers
-            const monthNum = parseInt(month.trim());
-            if (monthNum === targetMonth) {
-                return true;
-            }
-        }
+    // Handle year-round items (start = 1, end = 12)
+    if (start === 1 && end === 12) {
+        return true;
     }
     
-    return false;
+    // Handle normal ranges
+    if (start <= end) {
+        // Same year range (e.g., March to May: 3-5)
+        return targetMonth >= start && targetMonth <= end;
+    } else {
+        // Cross-year range (e.g., November to February: 11-2)
+        return targetMonth >= start || targetMonth <= end;
+    }
 }
 
-// Fetch data from SQL for a specific category
+// Fetch data from Supabase for a specific category
 async function fetchCategoryData(category) {
-    const tableName = SQL_CONFIG.tables[category];
+    const tableName = SUPABASE_CONFIG.tables[category];
     if (!tableName) {
         console.error(`Unknown category: ${category}`);
         return [];
     }
     
     try {
-        const response = await fetch(`${SQL_CONFIG.baseUrl}/${tableName}`);
+        const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${tableName}?select=*`, {
+            headers: {
+                'apikey': SUPABASE_CONFIG.anonKey,
+                'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
         const data = await response.json();
         
         // Cache the data
@@ -100,9 +106,9 @@ async function fetchCategoryData(category) {
     }
 }
 
-// Get cached data or fetch from SQL
+// Get cached data or fetch from Supabase
 async function getCategoryData(category) {
-    const tableName = SQL_CONFIG.tables[category];
+    const tableName = SUPABASE_CONFIG.tables[category];
     if (!tableName) return [];
     
     // Check cache first
@@ -110,7 +116,7 @@ async function getCategoryData(category) {
         return dataCache[tableName].get('all');
     }
     
-    // Fetch from SQL if not cached
+    // Fetch from Supabase if not cached
     return await fetchCategoryData(category);
 }
 
@@ -160,7 +166,7 @@ function getCurrentMonth() {
 // Get items for selected month, country and category from SQL
 async function getItemsForMonth(month, country, category = 'all') {
     if (country !== 'germany') {
-        return [];
+    return [];
     }
     
     try {
@@ -179,16 +185,16 @@ async function getItemsForMonth(month, country, category = 'all') {
             allItems = await getCategoryData(category);
         }
         
-        // Filter items by month
+        // Filter items by month using start and end columns
         const filteredItems = allItems.filter(item => {
-            return isMonthInRange(item.months, month);
+            return isMonthInRange(item.start, item.end, month);
         });
         
         // Transform SQL data to expected format
         return filteredItems.map(item => ({
             name: item.name,
             category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
-            ripeness: item.months || 'Unbekannt',
+            ripeness: formatRipenessPeriod(item.start, item.end),
             location: item.location || 'Unbekannt',
             whyCollect: item.reasons || 'Unbekannt',
             images: generatePlaceholderImages(item.name, getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category))
@@ -216,6 +222,32 @@ function getCategoryFromTableName(tableName) {
         'nuts': 'Nuts'
     };
     return categoryMap[tableName] || 'Fruits';
+}
+
+// Helper function to format ripeness period from start and end months
+function formatRipenessPeriod(startMonth, endMonth) {
+    if (!startMonth || !endMonth) return 'Unbekannt';
+    
+    const start = parseInt(startMonth);
+    const end = parseInt(endMonth);
+    
+    // Handle year-round items
+    if (start === 1 && end === 12) {
+        return 'Ganzjährig';
+    }
+    
+    // Handle single month
+    if (start === end) {
+        return monthNames[start];
+    }
+    
+    // Handle normal ranges
+    if (start < end) {
+        return `${monthNames[start]}-${monthNames[end]}`;
+    } else {
+        // Handle cross-year ranges (e.g., November to February)
+        return `${monthNames[start]}-${monthNames[end]}`;
+    }
 }
 
 // Create image HTML for table
@@ -425,20 +457,20 @@ async function updateDisplay() {
     
     try {
         const items = await getItemsForMonth(selectedMonth, selectedCountry, selectedCategory);
-        tableContainer.innerHTML = createItemsTable(items);
+    tableContainer.innerHTML = createItemsTable(items);
+    
+    // Add entrance animations to table rows
+    const rows = tableContainer.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(20px)';
         
-        // Add entrance animations to table rows
-        const rows = tableContainer.querySelectorAll('tbody tr');
-        rows.forEach((row, index) => {
-            row.style.opacity = '0';
-            row.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                row.style.transition = 'all 0.4s ease';
-                row.style.opacity = '1';
-                row.style.transform = 'translateY(0)';
-            }, index * 50);
-        });
+        setTimeout(() => {
+            row.style.transition = 'all 0.4s ease';
+            row.style.opacity = '1';
+            row.style.transform = 'translateY(0)';
+        }, index * 50);
+    });
     } catch (error) {
         console.error('Error updating display:', error);
         tableContainer.innerHTML = `
