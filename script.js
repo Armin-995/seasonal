@@ -11,6 +11,8 @@ Each table should have the following columns:
 - start (INTEGER): First month of ripeness (1-12)
 - end (INTEGER): Last month of ripeness (1-12)
 - location (TEXT): Where to find this item
+- image1 (TEXT): First image URL (optional)
+- image2 (TEXT): Second image URL (optional)
 
 Supabase Configuration:
 1. Replace 'YOUR_SUPABASE_URL' with your Supabase project URL
@@ -22,6 +24,10 @@ The start and end fields should contain numeric month values (1-12):
 - Month range: start=7, end=9 (July through September)
 - Year-round: start=1, end=12 (Available all year)
 - Cross-year range: start=11, end=2 (November through February)
+
+Image URLs should be direct links to images (e.g., https://example.com/image.jpg)
+If no images are provided, placeholder images will be used automatically.
+The table displays exactly 2 images per item.
 */
 
 // Configuration for Supabase data fetching
@@ -197,7 +203,7 @@ async function getItemsForMonth(month, country, category = 'all') {
             ripeness: formatRipenessPeriod(item.start, item.end),
             location: item.location || 'Unbekannt',
             whyCollect: item.reasons || 'Unbekannt',
-            images: generatePlaceholderImages(item.name, getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category))
+            images: getItemImages(item)
         }));
         
     } catch (error) {
@@ -248,6 +254,27 @@ function formatRipenessPeriod(startMonth, endMonth) {
         // Handle cross-year ranges (e.g., November to February)
         return `${monthNames[start]}-${monthNames[end]}`;
     }
+}
+
+// Helper function to get images from database or use fallbacks
+function getItemImages(item) {
+    const images = [];
+    
+    // Add images from database if they exist
+    if (item.image1) images.push(item.image1);
+    if (item.image2) images.push(item.image2);
+    
+    // If no database images, use placeholder images
+    if (images.length === 0) {
+        return generatePlaceholderImages(item.name, getCategoryFromTableName(getCategoryFromItem(item)));
+    }
+    
+    // Fill up to 2 images with placeholders if needed
+    while (images.length < 2) {
+        images.push(generatePlaceholderImages(item.name, getCategoryFromTableName(getCategoryFromItem(item)))[images.length]);
+    }
+    
+    return images;
 }
 
 // Create image HTML for table
@@ -413,7 +440,6 @@ function createItemsTable(items) {
                     <th>Warum sammeln?</th>
                     <th>Bild 1</th>
                     <th>Bild 2</th>
-                    <th>Bild 3</th>
                 </tr>
             </thead>
             <tbody>
@@ -429,7 +455,6 @@ function createItemsTable(items) {
                         <td>${item.whyCollect}</td>
                         <td>${createImageHTML(item, 0)}</td>
                         <td>${createImageHTML(item, 1)}</td>
-                        <td>${createImageHTML(item, 2)}</td>
                     </tr>
                 `).join('')}
             </tbody>
