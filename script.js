@@ -438,6 +438,8 @@ function createItemsTable(items) {
                     <th>Reifezeitpunkt</th>
                     <th>Standort</th>
                     <th>Warum sammeln?</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
