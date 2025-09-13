@@ -6,6 +6,8 @@ Supabase Database Structure Required:
 
 The application expects three tables: 'fruits', 'herbs', and 'nuts'
 Each table should have the following columns:
+
+BASIC COLUMNS:
 - name (VARCHAR): The name of the item
 - reasons (TEXT): Why to collect this item
 - start (INTEGER): First month of ripeness (1-12)
@@ -14,6 +16,13 @@ Each table should have the following columns:
 - image1 (TEXT): First image URL (optional)
 - image2 (TEXT): Second image URL (optional)
 
+DETAILED CONTENT COLUMNS:
+- description (TEXT): Detailed description of the item
+- how_to_find (TEXT): How and where to find it
+- recipes (TEXT): JSON string with recipe array (e.g., '["Recipe 1", "Recipe 2"]')
+- lookalikes (TEXT): JSON string with lookalike warnings (e.g., '["Warning 1", "Warning 2"]')
+- seasonal_info (TEXT): Additional seasonal information
+
 Supabase Configuration:
 1. Replace 'YOUR_SUPABASE_URL' with your Supabase project URL
 2. Replace 'YOUR_SUPABASE_ANON_KEY' with your Supabase anon key
@@ -21,13 +30,14 @@ Supabase Configuration:
 
 The start and end fields should contain numeric month values (1-12):
 - Single month: start=9, end=9 (September only)
-- Month range: start=7, end=9 (July through September) 
+- Month range: start=7, end=9 (July through September)
 - Year-round: start=1, end=12 (Available all year)
 - Cross-year range: start=11, end=2 (November through February)
 
 Image URLs should be direct links to images (e.g., https://example.com/image.jpg)
 If no images are provided, placeholder images will be used automatically.
-The table displays exactly 2 images per item.
+The homepage shows a clean list with name and image preview.
+Clicking opens a detailed modal with all information.
 */
 
 // Configuration for Supabase data fetching
@@ -199,11 +209,17 @@ async function getItemsForMonth(month, country, category = 'all') {
         // Transform SQL data to expected format
         return filteredItems.map(item => ({
             name: item.name,
+            images: getItemImages(item),
             category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
             ripeness: formatRipenessPeriod(item.start, item.end),
             location: item.location || 'Unbekannt',
             whyCollect: item.reasons || 'Unbekannt',
-            images: getItemImages(item)
+            // Detailed content fields
+            description: item.description || null,
+            howToFind: item.how_to_find || null,
+            recipes: item.recipes ? JSON.parse(item.recipes) : null,
+            lookalikes: item.lookalikes ? JSON.parse(item.lookalikes) : null,
+            seasonalInfo: item.seasonal_info || null
         }));
         
     } catch (error) {
@@ -277,6 +293,24 @@ function getItemImages(item) {
     return images;
 }
 
+// Create image preview HTML for list
+function createImagePreviewHTML(item) {
+    const imageUrl = item.images[0]; // Use first image for preview
+    const fallbackEmoji = item.category === 'Fruits' ? '🍓' : item.category === 'Herbs' ? '🌿' : item.category === 'Nuts' ? '🌰' : '🍄';
+    
+    if (imageUrl) {
+        return `
+            <img src="${imageUrl}" 
+                 alt="${item.name}" 
+                 class="preview-image" 
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">${fallbackEmoji}</div>
+        `;
+    } else {
+        return `<div class="image-placeholder">${fallbackEmoji}</div>`;
+    }
+}
+
 // Create image HTML for table
 function createImageHTML(item, imageIndex) {
     const imageUrl = item.images[imageIndex];
@@ -285,7 +319,7 @@ function createImageHTML(item, imageIndex) {
     if (imageUrl) {
         return `
             <img src="${imageUrl}" 
-                 alt="${item.name} - Bild ${imageIndex + 1}" 
+                 alt="${item.name}" 
                  class="item-image" 
                  onclick="openImageModal('${item.name}', ${JSON.stringify(item.images).replace(/"/g, '&quot;')})"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -335,14 +369,13 @@ function createItemPage(item) {
                     <div class="item-detail-container">
                         <!-- Images Gallery -->
                         <section class="images-section">
-                            <h2>Bilder</h2>
                             <div class="images-gallery">
                                 ${item.images.map((imageUrl, index) => `
                                     <div class="gallery-image-container">
                                         <img src="${imageUrl}" 
-                                             alt="${item.name} - Bild ${index + 1}" 
+                                             alt="${item.name}" 
                                              class="gallery-image"
-                                             onclick="openFullImage('${imageUrl}', '${item.name} - Bild ${index + 1}')">
+                                             onclick="openFullImage('${imageUrl}', '${item.name}')">
                                     </div>
                                 `).join('')}
                             </div>
@@ -410,7 +443,99 @@ function createItemPage(item) {
     return pageContent;
 }
 
-// Open item page
+// Open item modal
+function openItemModal(item) {
+    // Create modal HTML
+    const modalHTML = `
+        <div id="itemModal" class="item-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">${item.name}</h2>
+                    <span class="close" onclick="closeItemModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="item-details">
+                        <div class="item-meta">
+                            <span class="item-category ${item.category.toLowerCase()}">${item.category}</span>
+                            <span class="item-season">${item.ripeness}</span>
+                        </div>
+                        
+                        <div class="item-images">
+                            ${item.images.map((imageUrl, index) => `
+                                <div class="modal-image-container">
+                                    <img src="${imageUrl}" 
+                                         alt="${item.name} - Bild ${index + 1}" 
+                                         class="modal-image"
+                                         onclick="openFullImage('${imageUrl}', '${item.name} - Bild ${index + 1}')">
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="item-info-grid">
+                            <div class="info-section">
+                                <h3>Standort</h3>
+                                <p>${item.location}</p>
+                            </div>
+                            <div class="info-section">
+                                <h3>Warum sammeln?</h3>
+                                <p>${item.whyCollect}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="detailed-content">
+                            <div class="content-section">
+                                <h3>Beschreibung</h3>
+                                <p>${item.description || 'Ausführliche Beschreibung folgt...'}</p>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h3>Wie und wo finden?</h3>
+                                <p>${item.howToFind || 'Detaillierte Anleitung folgt...'}</p>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h3>Rezepte</h3>
+                                <ul>
+                                    ${(item.recipes || ['Rezepte folgen...']).map(recipe => `<li>${recipe}</li>`).join('')}
+                                </ul>
+                            </div>
+                            
+                            <div class="content-section">
+                                <h3>Mögliche Verwechslungen</h3>
+                                <ul>
+                                    ${(item.lookalikes || ['Warnungen folgen...']).map(lookalike => `<li>${lookalike}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal
+    const modal = document.getElementById('itemModal');
+    modal.style.display = 'block';
+    
+    // Close modal when clicking outside
+    modal.onclick = function(event) {
+        if (event.target === modal) {
+            closeItemModal();
+        }
+    };
+}
+
+function closeItemModal() {
+    const modal = document.getElementById('itemModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// Open item page (kept for compatibility)
 function openItemPage(item) {
     const pageContent = createItemPage(item);
     const blob = new Blob([pageContent], { type: 'text/html' });
@@ -430,38 +555,25 @@ function createItemsTable(items) {
         `;
     }
 
-    const tableHTML = `
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Reifezeitpunkt</th>
-                    <th>Standort</th>
-                    <th>Warum sammeln?</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                ${items.map(item => `
-                    <tr>
-                        <td class="item-name">
-                            <a href="#" onclick="openItemPage(${JSON.stringify(item).replace(/"/g, '&quot;')}); return false;" class="item-link">
-                                ${item.name}
-                            </a>
-                        </td>
-                        <td>${item.ripeness}</td>
-                        <td>${item.location}</td>
-                        <td>${item.whyCollect}</td>
-                        <td>${createImageHTML(item, 0)}</td>
-                        <td>${createImageHTML(item, 1)}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
+    const listHTML = `
+        <div class="items-list">
+            ${items.map(item => `
+                <div class="item-card" onclick="openItemModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                    <div class="item-preview">
+                        <div class="item-image-preview">
+                            ${createImagePreviewHTML(item)}
+                        </div>
+                        <div class="item-info">
+                            <h3 class="item-name">${item.name}</h3>
+                            <p class="item-category-badge ${item.category.toLowerCase()}">${item.category}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
     `;
     
-    return tableHTML;
+    return listHTML;
 }
 
 // Update the display
@@ -559,17 +671,17 @@ function openImageModal(itemName, images) {
         <div id="imageModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">${itemName} - Bilder</h2>
+                    <h2 class="modal-title">${itemName}</h2>
                     <span class="close" onclick="closeImageModal()">&times;</span>
                 </div>
                 <div class="modal-images">
                     ${images.map((imageUrl, index) => `
                         <div class="modal-image-container">
                             <img src="${imageUrl}" 
-                                 alt="${itemName} - Bild ${index + 1}" 
+                                 alt="${itemName}" 
                                  class="modal-image"
-                                 onclick="openFullImage('${imageUrl}', '${itemName} - Bild ${index + 1}')">
-                            <div class="image-caption">Bild ${index + 1}</div>
+                                 onclick="openFullImage('${imageUrl}', '${itemName}')">
+                            <div class="image-caption"> </div>
                         </div>
                     `).join('')}
                 </div>
