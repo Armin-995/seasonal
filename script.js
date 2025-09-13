@@ -535,7 +535,7 @@ function createItemsTable(items) {
 
     const listHTML = `
         <div class="items-list">
-            ${items.map(item => `
+                ${items.map(item => `
                 <div class="item-card" onclick="openItemModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
                     <div class="item-preview">
                         <div class="item-image-preview">
@@ -543,11 +543,10 @@ function createItemsTable(items) {
                         </div>
                         <div class="item-info">
                             <h3 class="item-name">${item.name}</h3>
-                            <p class="item-category-badge ${item.category.toLowerCase()}">${item.category}</p>
                         </div>
                     </div>
                 </div>
-            `).join('')}
+                `).join('')}
         </div>
     `;
     
