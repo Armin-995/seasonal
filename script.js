@@ -7,19 +7,16 @@ Supabase Database Structure Required:
 The application expects three tables: 'fruits', 'herbs', and 'nuts'
 Each table should have the following columns:
 
-BASIC COLUMNS:
+REQUIRED COLUMNS:
 - name (VARCHAR): The name of the item
-- reasons (TEXT): Why to collect this item
+- reasons (TEXT): Description/why to collect this item (used as description in modal)
 - start (INTEGER): First month of ripeness (1-12)
 - end (INTEGER): Last month of ripeness (1-12)
-- location (TEXT): Where to find this item
+- location (TEXT): Where to find this item (used as how_to_find in modal)
 - image1 (TEXT): First image URL (optional)
 - image2 (TEXT): Second image URL (optional)
 
-DETAILED CONTENT COLUMNS:
-- description (TEXT): Detailed description of the item
-- how_to_find (TEXT): How and where to find it
-- recipes (TEXT): JSON string with recipe array (e.g., '["Recipe 1", "Recipe 2"]')
+OPTIONAL DETAILED CONTENT COLUMNS:
 - lookalikes (TEXT): JSON string with lookalike warnings (e.g., '["Warning 1", "Warning 2"]')
 - seasonal_info (TEXT): Additional seasonal information
 
@@ -212,12 +209,10 @@ async function getItemsForMonth(month, country, category = 'all') {
             images: getItemImages(item),
             category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
             ripeness: formatRipenessPeriod(item.start, item.end),
-            location: item.location || 'Unbekannt',
-            whyCollect: item.reasons || 'Unbekannt',
-            // Detailed content fields
-            description: item.description || null,
-            howToFind: item.how_to_find || null,
-            recipes: item.recipes ? JSON.parse(item.recipes) : null,
+            // Use existing columns for new fields
+            description: item.reasons || 'Unbekannt',
+            howToFind: item.location || 'Unbekannt',
+            // Additional detailed content fields
             lookalikes: item.lookalikes ? JSON.parse(item.lookalikes) : null,
             seasonalInfo: item.seasonal_info || null
         }));
@@ -456,7 +451,6 @@ function openItemModal(item) {
                 <div class="modal-body">
                     <div class="item-details">
                         <div class="item-meta">
-                            <span class="item-category ${item.category.toLowerCase()}">${item.category}</span>
                             <span class="item-season">${item.ripeness}</span>
                         </div>
                         
@@ -473,38 +467,22 @@ function openItemModal(item) {
                         
                         <div class="item-info-grid">
                             <div class="info-section">
-                                <h3>Standort</h3>
-                                <p>${item.location}</p>
+                                <h3>Beschreibung</h3>
+                                <p>${item.description}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Warum sammeln?</h3>
-                                <p>${item.whyCollect}</p>
+                                <h3>Wie und wo finden?</h3>
+                                <p>${item.howToFind}</p>
                             </div>
                         </div>
                         
                         <div class="detailed-content">
                             <div class="content-section">
-                                <h3>Beschreibung</h3>
-                                <p>${item.description || 'Ausführliche Beschreibung folgt...'}</p>
-                            </div>
-                            
-                            <div class="content-section">
-                                <h3>Wie und wo finden?</h3>
-                                <p>${item.howToFind || 'Detaillierte Anleitung folgt...'}</p>
-                            </div>
-                            
-                            <div class="content-section">
-                                <h3>Rezepte</h3>
-                                <ul>
-                                    ${(item.recipes || ['Rezepte folgen...']).map(recipe => `<li>${recipe}</li>`).join('')}
-                                </ul>
-                            </div>
-                            
-                            <div class="content-section">
                                 <h3>Mögliche Verwechslungen</h3>
-                                <ul>
-                                    ${(item.lookalikes || ['Warnungen folgen...']).map(lookalike => `<li>${lookalike}</li>`).join('')}
-                                </ul>
+                                ${item.lookalikes && item.lookalikes.length > 0 ? 
+                                    `<ul>${item.lookalikes.map(lookalike => `<li>${lookalike}</li>`).join('')}</ul>` :
+                                    `<p class="no-warnings">Keine Doppelgänger bekannt :)</p>`
+                                }
                             </div>
                         </div>
                     </div>
