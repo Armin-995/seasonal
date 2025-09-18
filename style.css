@@ -20,9 +20,28 @@ body {
 /* Mobile background fix */
 @media (max-width: 768px) {
     body {
+        background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll;
         background-attachment: scroll;
         background-size: cover;
         background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+    }
+}
+
+/* Additional mobile background fix for smaller screens */
+@media (max-width: 480px) {
+    body {
+        background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll;
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
     }
 }
 
@@ -233,7 +252,7 @@ body::before {
     align-items: center;
     gap: 14px;
     padding: 18px 24px;
-    color: #ffffff;
+    color: #14532d;
     text-decoration: none;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
