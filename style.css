@@ -20,28 +20,24 @@ body {
 /* Mobile background fix */
 @media (max-width: 768px) {
     body {
-        background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll;
-        background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
+        background-image: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') !important;
+        background-position: center center !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: scroll !important;
+        min-height: 100vh !important;
     }
 }
 
 /* Additional mobile background fix for smaller screens */
 @media (max-width: 480px) {
     body {
-        background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll;
-        background-attachment: scroll;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
+        background-image: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') !important;
+        background-position: center center !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: scroll !important;
+        min-height: 100vh !important;
     }
 }
 
