@@ -9,9 +9,7 @@ body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.7;
     color: #ffffff;
-    background: 
-        linear-gradient(135deg, rgba(20, 83, 45, 0.8) 0%, rgba(34, 197, 94, 0.6) 50%, rgba(16, 185, 129, 0.8) 100%),
-        url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat fixed;
+    background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat fixed;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -19,14 +17,10 @@ body {
     padding: 0;
 }
 
-/* Mobile background fix - CSS only approach */
+/* Mobile background fix - Green Leaves Wallpaper */
 @media (max-width: 768px) {
     body {
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(20, 83, 45, 0.4) 0%, transparent 50%),
-            linear-gradient(135deg, #14532d 0%, #22c55e 25%, #16a34a 50%, #14532d 75%, #22c55e 100%) !important;
+        background: url('https://www.ixpap.com/images/2024/12/Green-Leaves-Wallpaper-3.jpg') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
@@ -35,11 +29,7 @@ body {
 /* Additional mobile background fix for smaller screens */
 @media (max-width: 480px) {
     body {
-        background: 
-            radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.4) 0%, transparent 60%),
-            radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.4) 0%, transparent 60%),
-            radial-gradient(circle at 50% 50%, rgba(20, 83, 45, 0.5) 0%, transparent 60%),
-            linear-gradient(135deg, #14532d 0%, #22c55e 30%, #16a34a 60%, #14532d 90%, #22c55e 100%) !important;
+        background: url('https://www.ixpap.com/images/2024/12/Green-Leaves-Wallpaper-3.jpg') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
