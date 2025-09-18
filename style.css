@@ -9,7 +9,9 @@ body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.7;
     color: #ffffff;
-    background: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat fixed;
+    background: 
+        linear-gradient(135deg, rgba(20, 83, 45, 0.8) 0%, rgba(34, 197, 94, 0.6) 50%, rgba(16, 185, 129, 0.8) 100%),
+        url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat fixed;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -20,10 +22,9 @@ body {
 /* Mobile background fix */
 @media (max-width: 768px) {
     body {
-        background-image: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') !important;
-        background-position: center center !important;
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
+        background: 
+            linear-gradient(135deg, rgba(20, 83, 45, 0.9) 0%, rgba(34, 197, 94, 0.7) 25%, rgba(16, 185, 129, 0.8) 50%, rgba(20, 83, 45, 0.9) 75%, rgba(34, 197, 94, 0.7) 100%),
+            url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
@@ -32,10 +33,9 @@ body {
 /* Additional mobile background fix for smaller screens */
 @media (max-width: 480px) {
     body {
-        background-image: url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') !important;
-        background-position: center center !important;
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
+        background: 
+            linear-gradient(135deg, rgba(20, 83, 45, 0.95) 0%, rgba(34, 197, 94, 0.8) 25%, rgba(16, 185, 129, 0.9) 50%, rgba(20, 83, 45, 0.95) 75%, rgba(34, 197, 94, 0.8) 100%),
+            url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
