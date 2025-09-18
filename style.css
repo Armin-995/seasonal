@@ -17,10 +17,10 @@ body {
     padding: 0;
 }
 
-/* Mobile background fix - Green Leaves Wallpaper */
+/* Mobile background fix - Vibrant Blackberry Leaves Wallpaper */
 @media (max-width: 768px) {
     body {
-        background: url('https://www.ixpap.com/images/2024/12/Green-Leaves-Wallpaper-3.jpg') center center / cover no-repeat scroll !important;
+        background: url('https://media.livewallpapers.com/images/high/vibrant-blackberry-leaves-wallpaper.webp') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
@@ -29,7 +29,7 @@ body {
 /* Additional mobile background fix for smaller screens */
 @media (max-width: 480px) {
     body {
-        background: url('https://www.ixpap.com/images/2024/12/Green-Leaves-Wallpaper-3.jpg') center center / cover no-repeat scroll !important;
+        background: url('https://media.livewallpapers.com/images/high/vibrant-blackberry-leaves-wallpaper.webp') center center / cover no-repeat scroll !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
