@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Was ist wild und in Saison?</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Abstract nature background elements -->
+    <div class="background-elements">
+        <div class="floating-circle circle-1"></div>
+        <div class="floating-circle circle-2"></div>
+        <div class="floating-circle circle-3"></div>
+        <div class="floating-circle circle-4"></div>
+        <div class="floating-circle circle-5"></div>
+        <div class="floating-circle circle-6"></div>
+        <div class="organic-shape shape-1"></div>
+        <div class="organic-shape shape-2"></div>
+        <div class="organic-shape shape-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Navigation Dropdown -->
+        <nav class="main-navigation">
+            <div class="nav-dropdown">
+                <button class="nav-toggle" onclick="toggleDropdown()">
+                    <span class="nav-icon">☰</span>
+                    <span class="nav-text">Menü</span>
+                </button>
+                <div class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link">
+                        <span class="nav-link-icon">🏠</span>
+                        Startseite
+                    </a>
+                    <a href="about.html" class="nav-link">
+                        <span class="nav-link-icon">🌱</span>
+                        Über uns
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <h1 class="main-title">💬 Feedback 💬</h1>
+            <a href="index.html" class="back-link">← Zurück zur Hauptseite</a>
+        </header>
+
+        <main class="content">
+            <div class="feedback-container">
+                <section class="feedback-section">
+                    <h2>Deine Meinung ist uns wichtig!</h2>
+                    <p>Wir freuen uns über dein Feedback, deine Vorschläge und deine Erfahrungen mit unserer Plattform. Hilf uns dabei, die Seite noch besser zu machen!</p>
+                </section>
+
+                <form class="feedback-form" id="feedbackForm">
+                    <div class="form-group">
+                        <label for="name">Name (optional)</label>
+                        <input type="text" id="name" name="name" placeholder="Dein Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">E-Mail (optional)</label>
+                        <input type="email" id="email" name="email" placeholder="deine@email.de">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedbackType">Art des Feedbacks</label>
+                        <select id="feedbackType" name="feedbackType">
+                            <option value="general">Allgemeines Feedback</option>
+                            <option value="bug">Fehler melden</option>
+                            <option value="suggestion">Verbesserungsvorschlag</option>
+                            <option value="plant">Neue Pflanze vorschlagen</option>
+                            <option value="experience">Sammelerfahrung teilen</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Deine Nachricht *</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Teile uns deine Gedanken mit..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Wie gefällt dir unsere Seite?</label>
+                        <div class="rating-group">
+                            <input type="radio" id="rating5" name="rating" value="5">
+                            <label for="rating5">⭐</label>
+                            <input type="radio" id="rating4" name="rating" value="4">
+                            <label for="rating4">⭐</label>
+                            <input type="radio" id="rating3" name="rating" value="3">
+                            <label for="rating3">⭐</label>
+                            <input type="radio" id="rating2" name="rating" value="2">
+                            <label for="rating2">⭐</label>
+                            <input type="radio" id="rating1" name="rating" value="1">
+                            <label for="rating1">⭐</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="submit-icon">📤</span>
+                        Feedback senden
+                    </button>
+                </form>
+
+                <section class="feedback-section">
+                    <h2>Alternative Kontaktmöglichkeiten</h2>
+                    <p>Du kannst uns auch direkt über folgende Kanäle erreichen:</p>
+                    <div class="contact-links">
+                        <a href="https://instagram.com/" target="_blank" class="contact-link">
+                            <span class="contact-icon">📷</span>
+                            Instagram
+                        </a>
+                        <a href="mailto:feedback@wildsammeln.de" class="contact-link">
+                            <span class="contact-icon">📧</span>
+                            E-Mail
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Entdecke die natürliche Fülle um dich herum</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/" target="_blank" class="social-link">
+                        <span class="social-icon">📷</span>
+                        Instagram
+                    </a>
+                </div>
+                <a href="admin.html" class="admin-link">Admin</a>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Feedback form handling
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const feedback = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                type: formData.get('feedbackType'),
+                message: formData.get('message'),
+                rating: formData.get('rating')
+            };
+            
+            // Here you would typically send the feedback to a server
+            // For now, we'll just show a success message
+            alert('Vielen Dank für dein Feedback! Wir werden uns deine Nachricht ansehen und uns bei Bedarf bei dir melden.');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>

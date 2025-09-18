@@ -163,7 +163,8 @@ function generateDetailedContent(item) {
             `Bei Unsicherheit konsultieren Sie einen Experten oder verwenden Sie Bestimmungsbücher.`
         ],
         season: `Saison: ${item.ripeness}. Standort: ${item.location}. Nutzen: ${item.whyCollect}.`,
-        description: item.description || `Ausführliche Beschreibung von ${item.name}: Diese Pflanze ist ein wichtiger Bestandteil der deutschen Flora und bietet viele gesundheitliche Vorteile.`
+        description: item.description || `Ausführliche Beschreibung von ${item.name}: Diese Pflanze ist ein wichtiger Bestandteil der deutschen Flora und bietet viele gesundheitliche Vorteile.`,
+        effect: item.effects || `Die Wirkung von ${item.name} auf unseren Körper: Diese Pflanze enthält wertvolle Inhaltsstoffe, die sich positiv auf unsere Gesundheit auswirken können.`
     };
     
     return content;
@@ -214,7 +215,8 @@ async function getItemsForMonth(month, country, category = 'all') {
             howToFind: item.location || 'Unbekannt',
             // Additional detailed content fields
             lookalikes: item.lookalikes ? JSON.parse(item.lookalikes) : null,
-            seasonalInfo: item.seasonal_info || null
+            seasonalInfo: item.seasonal_info || null,
+            effects: item.effects || null
         }));
         
     } catch (error) {
@@ -378,33 +380,26 @@ function createItemPage(item) {
 
                         <!-- Description -->
                         <section class="description-section">
-                            <h2>Beschreibung</h2>
+                            <h2>Merkmale</h2>
                             <p>${detailedContent.description}</p>
                         </section>
 
+                        <!-- Description -->
+                        <section class="description-section">
+                            <h2>Wirkung auf uns</h2>
+                            <p>${detailedContent.effect}</p>
+                        </section>
+
+
                         <!-- How to Find -->
                         <section class="how-to-find-section">
-                            <h2>Wie und wo finden?</h2>
+                            <h2>Standort</h2>
                             <p>${detailedContent.howToFind}</p>
-                        </section>
-
-                        <!-- Season Info -->
-                        <section class="season-section">
-                            <h2>Saison & Standort</h2>
-                            <p>${detailedContent.season}</p>
-                        </section>
-
-                        <!-- Recipes -->
-                        <section class="recipes-section">
-                            <h2>Rezepte</h2>
-                            <ul>
-                                ${detailedContent.recipes.map(recipe => `<li>${recipe}</li>`).join('')}
-                            </ul>
                         </section>
 
                         <!-- Lookalikes -->
                         <section class="lookalikes-section">
-                            <h2>Mögliche Verwechslungen</h2>
+                            <h2>Verwechslung</h2>
                             <ul>
                                 ${detailedContent.lookalikes.map(lookalike => `<li>${lookalike}</li>`).join('')}
                             </ul>
@@ -467,17 +462,18 @@ function openItemModal(item) {
                         
                         <div class="item-info-grid">
                             <div class="info-section">
-                                <h3>Beschreibung</h3>
+                                <h3>Merkmale</h3>
                                 <p>${item.description}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Wie und wo finden?</h3>
+                                <h3>Wirkung auf uns</h3>
+                                <p>${item.effects || 'Keine spezifischen Wirkungen bekannt.'}</p>
+                            </div>
+                            <div class="info-section">
+                                <h3>Vorkommen</h3>
                                 <p>${item.howToFind}</p>
                             </div>
-                        </div>
-                        
-                        <div class="detailed-content">
-                            <div class="content-section">
+                            <div class="info-section">
                                 <h3>Mögliche Verwechslungen</h3>
                                 ${item.lookalikes && item.lookalikes.length > 0 ? 
                                     `<ul>${item.lookalikes.map(lookalike => `<li>${lookalike}</li>`).join('')}</ul>` :
@@ -720,6 +716,22 @@ function closeFullImage() {
         modal.remove();
     }
 }
+
+// Navigation dropdown functionality
+function toggleDropdown() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('show');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const navDropdown = document.querySelector('.nav-dropdown');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (!navDropdown.contains(event.target)) {
+        navMenu.classList.remove('show');
+    }
+});
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializePage);
