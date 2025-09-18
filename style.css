@@ -19,12 +19,14 @@ body {
     padding: 0;
 }
 
-/* Mobile background fix */
+/* Mobile background fix - CSS only approach */
 @media (max-width: 768px) {
     body {
         background: 
-            linear-gradient(135deg, rgba(20, 83, 45, 0.9) 0%, rgba(34, 197, 94, 0.7) 25%, rgba(16, 185, 129, 0.8) 50%, rgba(20, 83, 45, 0.9) 75%, rgba(34, 197, 94, 0.7) 100%),
-            url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll !important;
+            radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(20, 83, 45, 0.4) 0%, transparent 50%),
+            linear-gradient(135deg, #14532d 0%, #22c55e 25%, #16a34a 50%, #14532d 75%, #22c55e 100%) !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
@@ -34,8 +36,10 @@ body {
 @media (max-width: 480px) {
     body {
         background: 
-            linear-gradient(135deg, rgba(20, 83, 45, 0.95) 0%, rgba(34, 197, 94, 0.8) 25%, rgba(16, 185, 129, 0.9) 50%, rgba(20, 83, 45, 0.95) 75%, rgba(34, 197, 94, 0.8) 100%),
-            url('https://wallpapers.com/images/featured/39hzfg9nvuarivt1.jpg') center center / cover no-repeat scroll !important;
+            radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.4) 0%, transparent 60%),
+            radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.4) 0%, transparent 60%),
+            radial-gradient(circle at 50% 50%, rgba(20, 83, 45, 0.5) 0%, transparent 60%),
+            linear-gradient(135deg, #14532d 0%, #22c55e 30%, #16a34a 60%, #14532d 90%, #22c55e 100%) !important;
         background-attachment: scroll !important;
         min-height: 100vh !important;
     }
