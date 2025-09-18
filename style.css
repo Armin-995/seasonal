@@ -17,6 +17,15 @@ body {
     padding: 0;
 }
 
+/* Mobile background fix */
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+
 /* Dark overlay for better text readability */
 body::before {
     content: '';
