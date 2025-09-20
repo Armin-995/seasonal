@@ -83,6 +83,49 @@
             <div class="items-table-container" id="items-table-container">
                 <!-- Items will be populated by JavaScript -->
             </div>
+            
+            <!-- Video Section -->
+            <div class="video-section">
+                <h2 class="video-title">🎬 Entdecke die Natur in Videos</h2>
+                <div class="video-container">
+                    <div class="video-input-section">
+                        <input type="url" id="videoUrlInput" class="video-url-input" placeholder="YouTube-URL eingeben..." />
+                        <button class="video-load-button" onclick="loadVideo()">▶️ Video laden</button>
+                    </div>
+                    
+                    <div class="video-frame-container">
+                        <div class="video-frame" id="videoFrame">
+                            <div class="video-placeholder" id="videoPlaceholder">
+                                <div class="placeholder-icon">🎥</div>
+                                <div class="placeholder-text">Kein Video geladen</div>
+                                <div class="placeholder-subtext">Geben Sie eine YouTube-URL ein</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-controls">
+                        <div class="video-control-group">
+                            <label for="videoVolume">Lautstärke:</label>
+                            <input type="range" id="videoVolume" min="0" max="100" value="50">
+                            <span id="volumeValue">50%</span>
+                        </div>
+                        
+                        <div class="video-control-group">
+                            <label for="videoSpeed">Geschwindigkeit:</label>
+                            <select id="videoSpeed">
+                                <option value="0.5">0.5x</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                        </div>
+                        
+                        <button class="video-reset-button" onclick="resetVideo()">🔄 Video zurücksetzen</button>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <footer class="footer">

@@ -725,3 +725,144 @@ document.addEventListener('click', function(event) {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializePage);
+
+// Video functionality
+function loadVideo() {
+    const url = document.getElementById('videoUrlInput').value.trim();
+    if (!url) {
+        alert('Bitte geben Sie eine YouTube-URL ein!');
+        return;
+    }
+
+    const videoFrame = document.getElementById('videoFrame');
+    const videoPlaceholder = document.getElementById('videoPlaceholder');
+    
+    // Hide placeholder
+    videoPlaceholder.style.display = 'none';
+
+    // Remove existing video
+    const existingVideo = videoFrame.querySelector('iframe');
+    if (existingVideo) {
+        existingVideo.remove();
+    }
+
+    // Extract YouTube video ID
+    let videoId = '';
+    if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.includes('youtube.com/watch')) {
+        videoId = url.split('v=')[1].split('&')[0];
+    } else if (url.includes('youtube.com/embed/')) {
+        videoId = url.split('embed/')[1].split('?')[0];
+    }
+
+    if (videoId) {
+        // Create YouTube iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+        iframe.allowFullscreen = true;
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.borderRadius = '10px';
+        
+        videoFrame.appendChild(iframe);
+        
+        // Save video settings
+        saveVideoSettings();
+    } else {
+        alert('Bitte geben Sie eine gültige YouTube-URL ein!');
+        videoPlaceholder.style.display = 'block';
+    }
+}
+
+function resetVideo() {
+    const videoUrlInput = document.getElementById('videoUrlInput');
+    const videoFrame = document.getElementById('videoFrame');
+    const videoPlaceholder = document.getElementById('videoPlaceholder');
+    
+    videoUrlInput.value = '';
+    videoPlaceholder.style.display = 'block';
+    
+    const existingVideo = videoFrame.querySelector('iframe');
+    if (existingVideo) {
+        existingVideo.remove();
+    }
+
+    // Reset controls
+    const videoVolume = document.getElementById('videoVolume');
+    const videoSpeed = document.getElementById('videoSpeed');
+    const volumeValue = document.getElementById('volumeValue');
+    
+    if (videoVolume) videoVolume.value = 50;
+    if (videoSpeed) videoSpeed.value = 1;
+    if (volumeValue) volumeValue.textContent = '50%';
+
+    saveVideoSettings();
+}
+
+function saveVideoSettings() {
+    const settings = {
+        videoUrl: document.getElementById('videoUrlInput').value,
+        volume: document.getElementById('videoVolume').value,
+        speed: document.getElementById('videoSpeed').value
+    };
+    localStorage.setItem('videoSettings', JSON.stringify(settings));
+}
+
+function loadVideoSettings() {
+    const savedSettings = localStorage.getItem('videoSettings');
+    if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        
+        const videoUrlInput = document.getElementById('videoUrlInput');
+        const videoVolume = document.getElementById('videoVolume');
+        const videoSpeed = document.getElementById('videoSpeed');
+        const volumeValue = document.getElementById('volumeValue');
+        
+        if (videoUrlInput) videoUrlInput.value = settings.videoUrl || '';
+        if (videoVolume) videoVolume.value = settings.volume || 50;
+        if (videoSpeed) videoSpeed.value = settings.speed || 1;
+        if (volumeValue) volumeValue.textContent = (settings.volume || 50) + '%';
+
+        // Load video automatically if URL is present
+        if (settings.videoUrl) {
+            loadVideo();
+        }
+    }
+}
+
+// Video control event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const videoVolume = document.getElementById('videoVolume');
+    const videoSpeed = document.getElementById('videoSpeed');
+    const videoUrlInput = document.getElementById('videoUrlInput');
+    const volumeValue = document.getElementById('volumeValue');
+
+    if (videoVolume) {
+        videoVolume.addEventListener('input', function() {
+            if (volumeValue) {
+                volumeValue.textContent = this.value + '%';
+            }
+            saveVideoSettings();
+        });
+    }
+
+    if (videoSpeed) {
+        videoSpeed.addEventListener('change', function() {
+            saveVideoSettings();
+        });
+    }
+
+    if (videoUrlInput) {
+        videoUrlInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadVideo();
+            }
+        });
+    }
+
+    // Load saved video settings
+    loadVideoSettings();
+});
