@@ -178,7 +178,7 @@ function getCurrentMonth() {
 }
 
 // Get items for selected month, country and category from SQL
-async function getItemsForMonth(month, country, category = 'all') {
+async function getItemsForMonth(month, country, category = 'all', regionCode = null) {
     if (country !== 'germany') {
     return [];
     }
@@ -197,6 +197,34 @@ async function getItemsForMonth(month, country, category = 'all') {
         } else {
             // Fetch data from specific category
             allItems = await getCategoryData(category);
+        }
+        
+        // Optional: filter by region code (Supabase column 'regions' with values 'k'|'b'|'a')
+        if (regionCode) {
+            allItems = allItems.filter(item => {
+                const raw = item.regions;
+                if (!raw) return false;
+                // Support formats: 'k', 'k,b', '{k,b}', '["k","b"]'
+                let codes = [];
+                if (Array.isArray(raw)) {
+                    codes = raw;
+                } else if (typeof raw === 'string') {
+                    const s = raw.trim();
+                    if ((s.startsWith('[') && s.endsWith(']')) || (s.startsWith('{') && s.endsWith('}'))) {
+                        try {
+                            codes = s.startsWith('[') ? JSON.parse(s) : s.slice(1, -1).split(',');
+                        } catch (_) {
+                            codes = s.replace(/[{}\[\]"]+/g, '').split(',');
+                        }
+                    } else if (s.includes(',')) {
+                        codes = s.split(',');
+                    } else {
+                        codes = [s];
+                    }
+                }
+                codes = codes.map(c => String(c).trim().toLowerCase());
+                return codes.includes(String(regionCode).toLowerCase());
+            });
         }
         
         // Filter items by month using start and end columns
@@ -542,8 +570,11 @@ function createItemsTable(items) {
 // Update the display
 async function updateDisplay() {
     const selectedMonth = parseInt(document.getElementById('month').value);
-    const selectedCountry = document.getElementById('country').value;
+    // The right-hand select is now a subregion filter (Küste/Berge/Alles andere).
+    // For data loading, we keep using the Mitteleuropa dataset (maps to 'germany' in current backend).
+    const selectedCountry = 'germany';
     const selectedCategory = document.getElementById('category').value;
+    const selectedRegionCode = document.getElementById('country').value; // k | b | a
     
     const tableContainer = document.getElementById('items-table-container');
     
@@ -556,7 +587,7 @@ async function updateDisplay() {
     `;
     
     try {
-        const items = await getItemsForMonth(selectedMonth, selectedCountry, selectedCategory);
+        const items = await getItemsForMonth(selectedMonth, selectedCountry, selectedCategory, selectedRegionCode);
     tableContainer.innerHTML = createItemsTable(items);
     
     // Add entrance animations to table rows
