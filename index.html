@@ -48,9 +48,13 @@
                 <div class="country-selector">
                     <label for="country">Region:</label>
                     <div class="country-row">
-                        <span class="region-group">Mitteleuropa:</span>
+                        <select id="regionGroup" name="regionGroup">
+                            <option value="mitteleuropa" selected>Mitteleuropa</option>
+                        </select>
                         <select id="country" name="country">
-                            <option value="germany">Deutschland</option>
+                            <option value="kueste">Küste</option>
+                            <option value="berge">Berge</option>
+                            <option value="alles-andere">Alles andere</option>
                         </select>
                     </div>
                 </div>
