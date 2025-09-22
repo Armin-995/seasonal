@@ -270,6 +270,21 @@ body::before {
     gap: 12px;
 }
 
+/* Inline label + select for Region */
+.country-selector .country-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.country-selector .region-group {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
 .country-selector label, .month-selector label, .category-selector label {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.1rem;
@@ -279,6 +294,20 @@ body::before {
     letter-spacing: 0.05em;
     margin-bottom: 10px;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Nudge the Region label over the select to sit centered above it */
+.country-selector label {
+    align-self: flex-start;
+    margin-left: 90px;
+}
+
+@media (max-width: 768px) {
+    .country-selector label { margin-left: 70px; }
+}
+
+@media (max-width: 480px) {
+    .country-selector label { margin-left: 60px; }
 }
 
 .country-selector select, .month-selector select, .category-selector select {
