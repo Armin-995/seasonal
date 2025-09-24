@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMIN</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Admin-specific styles */
         .admin-header {
@@ -16,20 +16,32 @@
         }
 
         .admin-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 2.5rem;
-            color: #2d3748;
+            color: #ffffff;
             margin-bottom: 16px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .back-link {
-            color: #4a5568;
+            color: #ffffff;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border-radius: 25px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            backdrop-filter: blur(10px);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .back-link:hover {
-            color: #2d3748;
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(16, 185, 129, 0.2) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         .flash-messages {
@@ -95,28 +107,31 @@
 
         .form-group label {
             font-weight: 500;
-            color: #4a5568;
+            color: #ffffff;
             font-size: 0.9rem;
+            font-family: 'Space Grotesk', sans-serif;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             padding: 12px 16px;
-            border: 2px solid rgba(113, 128, 150, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
             border-radius: 12px;
             font-size: 1rem;
-            font-family: inherit;
+            font-family: 'Poppins', sans-serif;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
+            color: #14532d;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #68d391;
-            box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.1);
+            border-color: rgba(34, 197, 94, 0.6);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
         }
 
         .form-group textarea {
@@ -193,6 +208,12 @@
         <div class="flash-messages" id="flash-messages">
             <!-- Flash messages will be populated by JavaScript -->
         </div>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button onclick="testSupabaseConnection()" style="background: #68d391; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                🔧 Supabase-Verbindung testen
+            </button>
+        </div>
 
         <main class="admin-content">
             <section class="add-item-section">
@@ -200,24 +221,42 @@
                 <form class="add-item-form" id="add-item-form">
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name">
                     </div>
                     
                     <div class="form-group">
                         <label for="category">Kategorie:</label>
-                        <select id="category" name="category" required>
+                        <select id="category" name="category">
                             <option value="">Kategorie wählen</option>
                             <option value="Fruits">Früchte</option>
                             <option value="Herbs">Kräuter</option>
                             <option value="Nuts">Nüsse</option>
-                            <option value="Mushrooms">Pilze</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="month">Monat:</label>
-                        <select id="month" name="month" required>
-                            <option value="">Monat wählen</option>
+                        <label for="month">Start Monat:</label>
+                        <select id="month" name="month">
+                            <option value="">Start Monat wählen</option>
+                            <option value="1">Januar</option>
+                            <option value="2">Februar</option>
+                            <option value="3">März</option>
+                            <option value="4">April</option>
+                            <option value="5">Mai</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Dezember</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endMonth">End Monat:</label>
+                        <select id="endMonth" name="endMonth">
+                            <option value="">End Monat wählen</option>
                             <option value="1">Januar</option>
                             <option value="2">Februar</option>
                             <option value="3">März</option>
@@ -234,18 +273,18 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="ripeness">Reifezeitpunkt:</label>
-                        <input type="text" id="ripeness" name="ripeness" placeholder="z.B. Juli-September" required>
+                        <label for="location">Vorkommen:</label>
+                        <input type="text" id="location" name="location" placeholder="z.B. Hecken, Wälder">
                     </div>
                     
                     <div class="form-group">
-                        <label for="location">Standort:</label>
-                        <input type="text" id="location" name="location" placeholder="z.B. Hecken, Wälder" required>
+                        <label for="whyCollect">Merkmale:</label>
+                        <textarea id="whyCollect" name="whyCollect" rows="3" placeholder="z.B. Vitamin C, Antioxidantien"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="whyCollect">Warum sammeln?:</label>
-                        <textarea id="whyCollect" name="whyCollect" rows="3" placeholder="z.B. Vitamin C, Antioxidantien" required></textarea>
+                        <label for="effects">Wirkung auf uns:</label>
+                        <textarea id="effects" name="effects" rows="3" placeholder="z.B. Stärkt das Immunsystem, wirkt entzündungshemmend"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -258,29 +297,14 @@
                         <input type="url" id="image2" name="image2" placeholder="https://example.com/image2.jpg">
                     </div>
                     
-                    <div class="form-group">
-                        <label for="image3">Bild 3 URL:</label>
-                        <input type="url" id="image3" name="image3" placeholder="https://example.com/image3.jpg">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="howToFind">Wie und wo finden:</label>
-                        <textarea id="howToFind" name="howToFind" rows="2" placeholder="Detaillierte Anleitung zum Finden..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="recipes">Rezepte (eine pro Zeile):</label>
                         <textarea id="recipes" name="recipes" rows="3" placeholder="Rezept 1&#10;Rezept 2&#10;Rezept 3"></textarea>
-                    </div>
+                    </div> -->
                     
                     <div class="form-group">
                         <label for="lookalikes">Mögliche Verwechslungen (eine pro Zeile):</label>
                         <textarea id="lookalikes" name="lookalikes" rows="3" placeholder="Verwechslung 1&#10;Verwechslung 2&#10;Verwechslung 3"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="description">Ausführliche Beschreibung:</label>
-                        <textarea id="description" name="description" rows="4" placeholder="Detaillierte Beschreibung der Pflanze..."></textarea>
                     </div>
                     
                     <button type="submit" class="submit-btn">Element hinzufügen</button>
@@ -297,26 +321,59 @@
     </div>
 
     <script>
-        // Storage key for seasonal items
-        const STORAGE_KEY = 'seasonal_items';
-
-        // Get items from localStorage or use empty array
-        function getItems() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try {
-                    return JSON.parse(stored);
-                } catch (e) {
-                    console.error('Error parsing stored items:', e);
-                    return [];
-                }
+        // Supabase Configuration (same as main script.js)
+        const SUPABASE_CONFIG = {
+            url: 'https://iriqtgabcbgotbtcmwoi.supabase.co',
+            anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlyaXF0Z2FiY2Jnb3RidGNtd29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2OTQ5ODYsImV4cCI6MjA3MzI3MDk4Nn0.VuM3gsJhJ3Fz28bPgsOlvDfmfE2j_dPuT-B_4xJGhag',
+            tables: {
+                'Fruits': 'fruits',
+                'Herbs': 'herbs',
+                'Nuts': 'nuts'
             }
-            return [];
+        };
+
+        // Get table name for category
+        function getTableName(category) {
+            return SUPABASE_CONFIG.tables[category];
         }
 
-        // Save items to localStorage
-        function saveItems(items) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        // Test Supabase connection and check table structure
+        async function testSupabaseConnection() {
+            try {
+                console.log('Testing Supabase connection...');
+                console.log('URL:', SUPABASE_CONFIG.url);
+                console.log('Key:', SUPABASE_CONFIG.anonKey.substring(0, 20) + '...');
+                
+                // Test with a simple query to fruits table to see its structure
+                const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/fruits?select=*&limit=1`, {
+                    headers: {
+                        'apikey': SUPABASE_CONFIG.anonKey,
+                        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log('Test response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Connection test successful!');
+                    console.log('Sample data from fruits table:', data);
+                    if (data.length > 0) {
+                        console.log('Available columns:', Object.keys(data[0]));
+                    } else {
+                        console.log('Table is empty, but connection works');
+                    }
+                    showFlashMessage('Supabase-Verbindung erfolgreich!', 'success');
+                } else {
+                    const error = await response.text();
+                    console.error('Connection test failed:', error);
+                    showFlashMessage(`Verbindungstest fehlgeschlagen: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                console.error('Connection test error:', error);
+                showFlashMessage('Verbindungstest fehlgeschlagen!', 'error');
+            }
         }
 
         // Show flash message
@@ -339,109 +396,209 @@
             return Date.now() + Math.random();
         }
 
-        // Add new item
-        function addItem(itemData) {
-            const items = getItems();
+        // Add new item to Supabase
+        async function addItem(itemData) {
+            const tableName = getTableName(itemData.category);
+            if (!tableName) {
+                showFlashMessage('Ungültige Kategorie!', 'error');
+                return;
+            }
+
             const images = [];
             
             // Collect image URLs
             if (itemData.image1) images.push(itemData.image1);
             if (itemData.image2) images.push(itemData.image2);
-            if (itemData.image3) images.push(itemData.image3);
             
-            // Process recipes and lookalikes
-            const recipes = itemData.recipes ? itemData.recipes.split('\n').filter(r => r.trim()) : [];
+            // Process lookalikes
             const lookalikes = itemData.lookalikes ? itemData.lookalikes.split('\n').filter(l => l.trim()) : [];
             
+            // Create ripeness string from start and end months
+            const startMonth = parseInt(itemData.month);
+            const endMonth = parseInt(itemData.endMonth);
+            let ripeness = '';
+            
+            if (startMonth === endMonth) {
+                const monthNames = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+                ripeness = monthNames[startMonth];
+            } else {
+                const monthNames = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+                ripeness = `${monthNames[startMonth]}-${monthNames[endMonth]}`;
+            }
+            
             const newItem = {
-                id: generateId(),
-                name: itemData.name,
-                category: itemData.category,
-                month: parseInt(itemData.month),
-                ripeness: itemData.ripeness,
-                location: itemData.location,
-                whyCollect: itemData.whyCollect,
+                name: itemData.name || 'Unnamed Item',
+                month: startMonth || 1, // Use start month as the primary month, default to 1
+                ripeness: ripeness || 'Unknown',
+                location: itemData.location || '',
+                whyCollect: itemData.whyCollect || '',
+                effects: itemData.effects || '',
                 images: images,
-                howToFind: itemData.howToFind || '',
-                recipes: recipes,
+                howToFind: itemData.location || '', // Use location as howToFind since you removed the separate field
+                recipes: [], // Empty since you commented out recipes
                 lookalikes: lookalikes,
-                description: itemData.description || ''
+                description: itemData.whyCollect || '' // Use whyCollect as description since you removed the separate field
             };
             
-            items.push(newItem);
-            saveItems(items);
-            showFlashMessage('Element erfolgreich hinzugefügt!');
-            renderItemsTable();
+            try {
+                const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${tableName}`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_CONFIG.anonKey,
+                        'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(newItem)
+                });
+                
+                if (response.ok) {
+                    showFlashMessage('Element erfolgreich hinzugefügt!');
+                    renderItemsTable();
+                } else {
+                    const error = await response.text();
+                    console.error('Error adding item:', error);
+                    console.error('Response status:', response.status);
+                    console.error('Response headers:', response.headers);
+                    console.error('Item data:', newItem);
+                    showFlashMessage(`Fehler beim Hinzufügen: ${response.status} - ${error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error adding item:', error);
+                showFlashMessage('Fehler beim Hinzufügen des Elements!', 'error');
+            }
         }
 
-        // Delete item
-        function deleteItem(itemId) {
+        // Delete item from Supabase
+        async function deleteItem(itemId, category) {
             if (confirm('Sind Sie sicher, dass Sie dieses Element löschen möchten?')) {
-                const items = getItems();
-                const filteredItems = items.filter(item => item.id !== itemId);
-                saveItems(filteredItems);
-                showFlashMessage('Element erfolgreich gelöscht!');
-                renderItemsTable();
+                const tableName = getTableName(category);
+                if (!tableName) {
+                    showFlashMessage('Ungültige Kategorie!', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${tableName}?id=eq.${itemId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'apikey': SUPABASE_CONFIG.anonKey,
+                            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        showFlashMessage('Element erfolgreich gelöscht!');
+                        renderItemsTable();
+                    } else {
+                        const error = await response.text();
+                        console.error('Error deleting item:', error);
+                        showFlashMessage('Fehler beim Löschen des Elements!', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error deleting item:', error);
+                    showFlashMessage('Fehler beim Löschen des Elements!', 'error');
+                }
             }
+        }
+
+        // Fetch all items from Supabase
+        async function fetchAllItems() {
+            const allItems = [];
+            
+            for (const [category, tableName] of Object.entries(SUPABASE_CONFIG.tables)) {
+                try {
+                    const response = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/${tableName}?select=*`, {
+                        headers: {
+                            'apikey': SUPABASE_CONFIG.anonKey,
+                            'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const items = await response.json();
+                        // Add category to each item for identification
+                        items.forEach(item => {
+                            item.category = category;
+                        });
+                        allItems.push(...items);
+                    } else {
+                        console.error(`Error fetching ${category}:`, response.statusText);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching ${category}:`, error);
+                }
+            }
+            
+            return allItems;
         }
 
         // Render items table
-        function renderItemsTable() {
-            const items = getItems();
+        async function renderItemsTable() {
             const tableContainer = document.getElementById('items-table');
+            tableContainer.innerHTML = '<p>Lade Elemente...</p>';
             
-            if (items.length === 0) {
-                tableContainer.innerHTML = '<p class="no-items">Keine Elemente gefunden.</p>';
-                return;
-            }
+            try {
+                const items = await fetchAllItems();
+                
+                if (items.length === 0) {
+                    tableContainer.innerHTML = '<p class="no-items">Keine Elemente gefunden.</p>';
+                    return;
+                }
 
-            const monthNames = {
-                1: 'Januar', 2: 'Februar', 3: 'März', 4: 'April', 5: 'Mai', 6: 'Juni',
-                7: 'Juli', 8: 'August', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Dezember'
-            };
+                const monthNames = {
+                    1: 'Januar', 2: 'Februar', 3: 'März', 4: 'April', 5: 'Mai', 6: 'Juni',
+                    7: 'Juli', 8: 'August', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Dezember'
+                };
 
-            const tableHTML = `
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Kategorie</th>
-                            <th>Monat</th>
-                            <th>Reifezeitpunkt</th>
-                            <th>Standort</th>
-                            <th>Warum sammeln?</th>
-                            <th>Bilder</th>
-                            <th>Aktionen</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(item => `
+                const tableHTML = `
+                    <table class="items-table">
+                        <thead>
                             <tr>
-                                <td class="item-name">${item.name}</td>
-                                <td><span class="item-category ${item.category.toLowerCase()}">${item.category}</span></td>
-                                <td>${monthNames[item.month] || 'Unbekannt'}</td>
-                                <td>${item.ripeness}</td>
-                                <td>${item.location}</td>
-                                <td>${item.whyCollect.length > 50 ? item.whyCollect.substring(0, 50) + '...' : item.whyCollect}</td>
-                                <td>
-                                    ${item.images ? item.images.length : 0} Bilder
-                                </td>
-                                <td>
-                                    <button class="delete-btn" onclick="deleteItem(${item.id})">
-                                        Löschen
-                                    </button>
-                                </td>
+                                <th>Name</th>
+                                <th>Kategorie</th>
+                                <th>Monat</th>
+                                <th>Reifezeitpunkt</th>
+                                <th>Standort</th>
+                                <th>Warum sammeln?</th>
+                                <th>Bilder</th>
+                                <th>Aktionen</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-            
-            tableContainer.innerHTML = tableHTML;
+                        </thead>
+                        <tbody>
+                            ${items.map(item => `
+                                <tr>
+                                    <td class="item-name">${item.name}</td>
+                                    <td><span class="item-category ${item.category.toLowerCase()}">${item.category}</span></td>
+                                    <td>${monthNames[item.month] || 'Unbekannt'}</td>
+                                    <td>${item.ripeness}</td>
+                                    <td>${item.location}</td>
+                                    <td>${item.whyCollect ? (item.whyCollect.length > 50 ? item.whyCollect.substring(0, 50) + '...' : item.whyCollect) : ''}</td>
+                                    <td>
+                                        ${item.images ? item.images.length : 0} Bilder
+                                    </td>
+                                    <td>
+                                        <button class="delete-btn" onclick="deleteItem(${item.id}, '${item.category}')">
+                                            Löschen
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+
+                tableContainer.innerHTML = tableHTML;
+            } catch (error) {
+                console.error('Error rendering items table:', error);
+                tableContainer.innerHTML = '<p class="no-items">Fehler beim Laden der Elemente.</p>';
+            }
         }
 
         // Handle form submission
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
             
             const formData = new FormData(e.target);
@@ -449,18 +606,19 @@
                 name: formData.get('name'),
                 category: formData.get('category'),
                 month: formData.get('month'),
-                ripeness: formData.get('ripeness'),
+                endMonth: formData.get('endMonth'),
                 location: formData.get('location'),
-                whyCollect: formData.get('whyCollect')
+                whyCollect: formData.get('whyCollect'),
+                effects: formData.get('effects'),
+                image1: formData.get('image1'),
+                image2: formData.get('image2'),
+                lookalikes: formData.get('lookalikes')
             };
 
-            // Validate required fields
-            if (!itemData.name || !itemData.category || !itemData.month || !itemData.ripeness || !itemData.location || !itemData.whyCollect) {
-                showFlashMessage('Bitte füllen Sie alle Pflichtfelder aus.', 'error');
-                return;
-            }
+            // No validation for testing - all fields optional
+            console.log('Form data:', itemData);
 
-            addItem(itemData);
+            await addItem(itemData);
             e.target.reset();
         }
 
