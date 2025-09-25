@@ -149,6 +149,15 @@ body::before {
     border-bottom: none;
 }
 
+.social-icon-img {
+    width: 25px;
+    height: 25px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+}
+
 .nav-link:hover {
     background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
     color: #15803d;
@@ -157,7 +166,7 @@ body::before {
 }
 
 .nav-link-icon {
-    font-size: 1.3rem;
+    font-size: 1.0rem;
 }
 
 /* Header and hero section */
