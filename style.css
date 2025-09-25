@@ -612,6 +612,21 @@ body::before {
     position: relative;
 }
 
+.item-modal .modal-header .item-season {
+    margin-left: auto;
+    margin-right: 20px;
+    order: 2;
+}
+
+.item-modal .modal-header .back-link {
+    order: 3;
+    margin-left: 0;
+}
+
+.item-modal .modal-header .close {
+    order: 4;
+}
+
 .item-modal .modal-header::after {
     content: '';
     position: absolute;
@@ -677,7 +692,7 @@ body::before {
     font-size: 1.1rem;
     color: #ffffff;
     font-weight: 400;
-    text-align: left;
+    text-align: right;
     margin: 8px 0 16px 0;
     border: 1px solid rgba(34, 197, 94, 0.3);
     border-left: 3px solid rgba(34, 197, 94, 0.5);
@@ -1020,16 +1035,57 @@ body::before {
 }
 
 .item-season {
+    
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
     backdrop-filter: blur(10px);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.9rem;
+    display: inline;
+    vertical-align: middle;
+    text-align: right;
     color: #ffffff;
     font-weight: 500;
     border: 1px solid rgba(34, 197, 94, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Specific styling for item-season in the main title */
+.hero .main-title .item-season {
+    display: inline !important;
+    margin: 0 !important;
+    vertical-align: middle;
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
+    margin-left: 8px !important;
+    float: none !important;
+    clear: none !important;
+    position: relative;
+    text-align: right !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    border-radius: 20px !important;
+    border-left: 1px solid rgba(34, 197, 94, 0.3) !important;
+}
+
+/* Position item-season on the right side of the header */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero .main-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.hero .main-title .item-season {
+    margin-left: auto !important;
+    order: 2;
 }
 
 .item-link {

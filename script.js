@@ -355,101 +355,6 @@ function createImageHTML(item, imageIndex) {
     }
 }
 
-// Create item page
-function createItemPage(item) {
-    const detailedContent = generateDetailedContent(item);
-    const pageContent = `
-        <!DOCTYPE html>
-        <html lang="de">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>${item.name} - Was ist wild und in Saison?</title>
-            <link rel="stylesheet" href="style.css">
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        </head>
-        <body>
-
-            <div class="container">
-                <header class="hero">
-                    <h1 class="main-title">${item.name}</h1>
-                    <div class="item-meta">
-                        <span class="item-category ${item.category.toLowerCase()}">${item.category}</span>
-                        <span class="item-season">${item.ripeness}</span>
-                    </div>
-                    <a href="index.html" class="back-link">← Zurück zur Hauptseite</a>
-                </header>
-
-                <main class="content">
-                    <div class="item-detail-container">
-                        <!-- Images Gallery -->
-                        <section class="images-section">
-                            <div class="images-gallery">
-                                ${item.images.map((imageUrl, index) => `
-                                    <div class="gallery-image-container">
-                                        <img src="${imageUrl}" 
-                                             alt="${item.name}" 
-                                             class="gallery-image"
-                                             onclick="openFullImage('${imageUrl}', '${item.name}')">
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </section>
-
-                        <!-- Description -->
-                        <section class="description-section">
-                            <h2>Merkmale</h2>
-                            <p>${detailedContent.description}</p>
-                        </section>
-
-                        <!-- Description -->
-                        <section class="description-section">
-                            <h2>Wirkung auf uns</h2>
-                            <p>${detailedContent.effect}</p>
-                        </section>
-
-
-                        <!-- How to Find -->
-                        <section class="how-to-find-section">
-                            <h2>Standort</h2>
-                            <p>${detailedContent.howToFind}</p>
-                        </section>
-
-                        <!-- Lookalikes -->
-                        <section class="lookalikes-section">
-                            <h2>Verwechslung</h2>
-                            <ul>
-                                ${detailedContent.lookalikes.map(lookalike => `<li>${lookalike}</li>`).join('')}
-                            </ul>
-                        </section>
-                    </div>
-                </main>
-
-                <footer class="footer">
-                    <div class="footer-content">
-                        <p>Entdecke die natürliche Fülle um dich herum</p>
-                        <div class="social-links">
-                            <a href="https://instagram.com/wildesammeln" target="_blank" class="social-link">
-                                <span class="social-icon">📷</span>
-                                Instagram
-                            </a>
-                            <a href="https://instagram.com/wildkraeuter" target="_blank" class="social-link">
-                                <span class="social-icon">🌿</span>
-                                Wildkräuter
-                            </a>
-                        </div>
-                        <a href="admin.html" class="admin-link">Admin</a>
-                    </div>
-                </footer>
-            </div>
-
-            <script src="script.js"></script>
-        </body>
-        </html>
-    `;
-    
-    return pageContent;
-}
 
 // Open item modal
 function openItemModal(item) {
@@ -459,14 +364,11 @@ function openItemModal(item) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title">${item.name}</h2>
+                    <span class="item-season">${item.ripeness}</span>
                     <span class="close" onclick="closeItemModal()">&times;</span>
                 </div>
                 <div class="modal-body">
                     <div class="item-details">
-                        <div class="item-meta">
-                            <span class="item-season">${item.ripeness}</span>
-                        </div>
-                        
                         <div class="item-images">
                             ${item.images.map((imageUrl, index) => `
                                 <div class="modal-image-container">
@@ -527,13 +429,6 @@ function closeItemModal() {
     }
 }
 
-// Open item page (kept for compatibility)
-function openItemPage(item) {
-    const pageContent = createItemPage(item);
-    const blob = new Blob([pageContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    window.open(url, '_blank');
-}
 
 // Create table HTML
 function createItemsTable(items) {
