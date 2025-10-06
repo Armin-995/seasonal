@@ -239,11 +239,11 @@ async function getItemsForMonth(month, country, category = 'all', regionCode = n
             category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
             ripeness: formatRipenessPeriod(item.start, item.end),
             // Use existing columns for new fields
-            description: item.reasons || 'Unbekannt',
+            description: item.description || 'Unbekannt',
             howToFind: item.location || 'Unbekannt',
             // Additional detailed content fields
-            lookalikes: item.lookalikes ? JSON.parse(item.lookalikes) : null,
-            seasonalInfo: item.seasonal_info || null,
+            lookalikes: item.lookalikes || null,
+            seasonalInfo: item.seasonalInfo || null,
             effects: item.effects || null
         }));
         
@@ -387,17 +387,16 @@ function openItemModal(item) {
                             </div>
                             <div class="info-section">
                                 <h3>Wirkung auf uns</h3>
-                                <p>${item.effects || 'Keine spezifischen Wirkungen bekannt.'}</p>
+                                <p>${item.effects}</p>
                             </div>
                             <div class="info-section">
                                 <h3>Vorkommen</h3>
                                 <p>${item.howToFind}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Mögliche Verwechslungen</h3>
-                                ${item.lookalikes && item.lookalikes.length > 0 ? 
-                                    `<ul>${item.lookalikes.map(lookalike => `<li>${lookalike}</li>`).join('')}</ul>` :
-                                    `<p class="no-warnings">Keine Doppelgänger bekannt :)</p>`
+                                <h3>Doppelgänger</h3>
+                                <p>${item.lookalikes}</p>
+                            </div>
                                 }
                             </div>
                         </div>
