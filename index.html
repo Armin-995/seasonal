@@ -10,6 +10,13 @@
 <body>
     <!-- Abstract nature background elements -->
 
+    <!-- Moving Disclaimer Banner -->
+    <div class="moving-banner">
+        <div class="banner-content">
+            <span class="banner-text">🚀 More features to come! Stay tuned for exciting updates! 🚀</span>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Navigation Dropdown -->
         <nav class="main-navigation">
@@ -38,6 +45,14 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="de" selected>🇩🇪 Deutsch</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
 
         <header class="hero">
             <h1 class="main-title">🌿 Was die Natur heute in deiner Region zu bieten hat 🌿</h1>
@@ -75,8 +90,8 @@
                 <div class="category-selector">
                     <label for="category">Was willst du sammeln?</label>
                     <select id="category" name="category">
-                        <option value="Fruits" selected>Obst & Beeren</option>
-                        <option value="Herbs">Wildkräuter</option>
+                        <option value="Fruits">Obst & Beeren</option>
+                        <option value="Herbs" selected>Wildkräuter</option>
                         <option value="Nuts">Nüsse & Hülsenfrüchte</option>
                     </select>
                 </div>
@@ -132,18 +147,18 @@
             </div> -->
         </main>
 
-        <!-- <footer class="footer">
+        <footer class="footer">
             <div class="footer-content">
-                <p>Schreib uns!</p>
+                <p>Made in Potsdam with ❤️</p>
                 <div class="social-links">
                     <a href="https://www.instagram.com/timetogather.de" target="_blank" class="social-link">
                         <span class="social-icon">📷</span>
                         Instagram
                     </a> 
                 </div>
-                <!-- <a href="admin.html" class="admin-link">Admin</a> -->
+                <p class="copyright">© TimeToGather 2025</p>
             </div>
-        </footer> -->
+        </footer>
     </div>
     <script src="script.js"></script>
 </body>

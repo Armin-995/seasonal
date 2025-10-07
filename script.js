@@ -233,7 +233,7 @@ async function getItemsForMonth(month, country, category = 'all', regionCode = n
         });
         
         // Transform SQL data to expected format
-        return filteredItems.map(item => ({
+        const transformedItems = filteredItems.map(item => ({
             name: item.name,
             images: getItemImages(item),
             category: getCategoryFromTableName(category === 'all' ? getCategoryFromItem(item) : category),
@@ -246,6 +246,14 @@ async function getItemsForMonth(month, country, category = 'all', regionCode = n
             seasonalInfo: item.seasonalInfo || null,
             effects: item.effects || null
         }));
+        
+        // Translate content if needed
+        const currentLanguage = localStorage.getItem('selectedLanguage') || 'de';
+        if (currentLanguage !== 'de') {
+            return await translateSupabaseContent(transformedItems, currentLanguage);
+        }
+        
+        return transformedItems;
         
     } catch (error) {
         console.error('Error fetching items:', error);
@@ -358,6 +366,8 @@ function createImageHTML(item, imageIndex) {
 
 // Open item modal
 function openItemModal(item) {
+    const currentLanguage = localStorage.getItem('selectedLanguage') || 'de';
+    
     // Create modal HTML
     const modalHTML = `
         <div id="itemModal" class="item-modal">
@@ -373,28 +383,28 @@ function openItemModal(item) {
                             ${item.images.map((imageUrl, index) => `
                                 <div class="modal-image-container">
                                     <img src="${imageUrl}" 
-                                         alt="${item.name} - Bild ${index + 1}" 
+                                         alt="${item.name} - ${getTranslation('description', currentLanguage)} ${index + 1}" 
                                          class="modal-image"
-                                         onclick="openFullImage('${imageUrl}', '${item.name} - Bild ${index + 1}')">
+                                         onclick="openFullImage('${imageUrl}', '${item.name} - ${getTranslation('description', currentLanguage)} ${index + 1}')">
                                 </div>
                             `).join('')}
                         </div>
                         
                         <div class="item-info-grid">
                             <div class="info-section">
-                                <h3>Merkmale</h3>
+                                <h3>${getTranslation('characteristics', currentLanguage)}</h3>
                                 <p>${item.description}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Wirkung auf uns</h3>
+                                <h3>${getTranslation('effects', currentLanguage)}</h3>
                                 <p>${item.effects}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Vorkommen</h3>
+                                <h3>${getTranslation('occurrence', currentLanguage)}</h3>
                                 <p>${item.howToFind}</p>
                             </div>
                             <div class="info-section">
-                                <h3>Doppelgänger</h3>
+                                <h3>${getTranslation('lookalikes', currentLanguage)}</h3>
                                 <p>${item.lookalikes}</p>
                             </div>
                                 }
@@ -431,12 +441,14 @@ function closeItemModal() {
 
 // Create table HTML
 function createItemsTable(items) {
+    const currentLanguage = localStorage.getItem('selectedLanguage') || 'de';
+    
     if (items.length === 0) {
         return `
             <div class="no-items">
                 <div class="no-items-icon">🌿</div>
-                <h2>Nichts in diesem Monat verfügbar</h2>
-                <p>Versuche einen anderen Monat oder Land!</p>
+                <h2>${getTranslation('nothing_available', currentLanguage)}</h2>
+                <p>${getTranslation('try_other_month', currentLanguage)}</p>
             </div>
         `;
     }
@@ -473,10 +485,11 @@ async function updateDisplay() {
     const tableContainer = document.getElementById('items-table-container');
     
     // Show loading state
+    const currentLanguage = localStorage.getItem('selectedLanguage') || 'de';
     tableContainer.innerHTML = `
         <div class="loading-state">
             <div class="loading-spinner"></div>
-            <p>Lade saisonale Produkte...</p>
+            <p>${getTranslation('loading', currentLanguage)}</p>
         </div>
     `;
     
@@ -498,11 +511,12 @@ async function updateDisplay() {
     });
     } catch (error) {
         console.error('Error updating display:', error);
+        const currentLanguage = localStorage.getItem('selectedLanguage') || 'de';
         tableContainer.innerHTML = `
             <div class="error-state">
                 <div class="error-icon">⚠️</div>
-                <h2>Fehler beim Laden der Daten</h2>
-                <p>Bitte versuchen Sie es später erneut.</p>
+                <h2>${getTranslation('error_loading', currentLanguage)}</h2>
+                <p>${getTranslation('try_later', currentLanguage)}</p>
             </div>
         `;
     }
@@ -648,8 +662,343 @@ document.addEventListener('click', function(event) {
     }
 });
 
+// Translation system
+const TRANSLATIONS = {
+    de: {
+        // UI Elements
+        'menu': 'Menü',
+        'about': 'Über uns',
+        'follow_us': 'Folg uns ❤️',
+        'what_to_collect': 'Was willst du sammeln?',
+        'fruits': 'Obst & Beeren',
+        'herbs': 'Wildkräuter',
+        'nuts': 'Nüsse & Hülsenfrüchte',
+        'region': 'Region:',
+        'current_month': 'Aktueller Monat:',
+        'made_in_potsdam': 'Made in Potsdam with ❤️',
+        'more_features': '🚀 Mehr Features kommen! Bleib dran für spannende Updates! 🚀',
+        'january': 'Januar',
+        'february': 'Februar',
+        'march': 'März',
+        'april': 'April',
+        'may': 'Mai',
+        'june': 'Juni',
+        'july': 'Juli',
+        'august': 'August',
+        'september': 'September',
+        'october': 'Oktober',
+        'november': 'November',
+        'december': 'Dezember',
+        'central_europe': 'Mitteleuropa',
+        'lowland': 'Tiefland',
+        'coast': 'Küste',
+        'mountains': 'Berge',
+        'nothing_available': 'Nichts in diesem Monat verfügbar',
+        'try_other_month': 'Versuche einen anderen Monat oder Land!',
+        'loading': 'Lade saisonale Produkte...',
+        'error_loading': 'Fehler beim Laden der Daten',
+        'try_later': 'Bitte versuchen Sie es später erneut.',
+        'characteristics': 'Merkmale',
+        'effects': 'Wirkung auf uns',
+        'occurrence': 'Vorkommen',
+        'lookalikes': 'Doppelgänger',
+        'season': 'Saison',
+        'description': 'Beschreibung'
+    },
+    en: {
+        // UI Elements
+        'menu': 'Menu',
+        'about': 'About us',
+        'follow_us': 'Follow us ❤️',
+        'what_to_collect': 'What do you want to collect?',
+        'fruits': 'Fruits & Berries',
+        'herbs': 'Wild Herbs',
+        'nuts': 'Nuts & Legumes',
+        'region': 'Region:',
+        'current_month': 'Current month:',
+        'made_in_potsdam': 'Made in Potsdam with ❤️',
+        'more_features': '🚀 More features to come! Stay tuned for exciting updates! 🚀',
+        'january': 'January',
+        'february': 'February',
+        'march': 'March',
+        'april': 'April',
+        'may': 'May',
+        'june': 'June',
+        'july': 'July',
+        'august': 'August',
+        'september': 'September',
+        'october': 'October',
+        'november': 'November',
+        'december': 'December',
+        'central_europe': 'Central Europe',
+        'lowland': 'Lowland',
+        'coast': 'Coast',
+        'mountains': 'Mountains',
+        'nothing_available': 'Nothing available this month',
+        'try_other_month': 'Try a different month or country!',
+        'loading': 'Loading seasonal products...',
+        'error_loading': 'Error loading data',
+        'try_later': 'Please try again later.',
+        'characteristics': 'Characteristics',
+        'effects': 'Effects on us',
+        'occurrence': 'Occurrence',
+        'lookalikes': 'Lookalikes',
+        'season': 'Season',
+        'description': 'Description'
+    }
+};
+
+// Google Translate API configuration
+const GOOGLE_TRANSLATE_API_KEY = 'YOUR_GOOGLE_TRANSLATE_API_KEY'; // Replace with your actual API key
+const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/translate/v2';
+
+// Translate text using Google Translate API
+async function translateText(text, targetLanguage) {
+    if (!GOOGLE_TRANSLATE_API_KEY || GOOGLE_TRANSLATE_API_KEY === 'YOUR_GOOGLE_TRANSLATE_API_KEY') {
+        console.warn('Google Translate API key not configured. Using fallback translation.');
+        return text; // Return original text if no API key
+    }
+    
+    try {
+        const response = await fetch(`${GOOGLE_TRANSLATE_URL}?key=${GOOGLE_TRANSLATE_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                q: text,
+                target: targetLanguage,
+                format: 'text'
+            })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            return data.data.translations[0].translatedText;
+        } else {
+            console.error('Translation API error:', response.statusText);
+            return text;
+        }
+    } catch (error) {
+        console.error('Translation error:', error);
+        return text;
+    }
+}
+
+// Get translation for a key
+function getTranslation(key, language = 'de') {
+    return TRANSLATIONS[language]?.[key] || key;
+}
+
+// Language switching functionality
+function changeLanguage() {
+    const languageSelect = document.getElementById('languageSelect');
+    const selectedLanguage = languageSelect.value;
+    
+    // Store language preference
+    localStorage.setItem('selectedLanguage', selectedLanguage);
+    
+    // Update UI elements
+    updateUIForLanguage(selectedLanguage);
+    
+    // Update banner text
+    updateBannerText(selectedLanguage);
+    
+    // Re-render content with new language
+    updateDisplay();
+}
+
+// Update UI elements for selected language
+function updateUIForLanguage(language) {
+    // Update navigation
+    const menuText = document.querySelector('.nav-text');
+    if (menuText) menuText.textContent = getTranslation('menu', language);
+    
+    // Update about link
+    const aboutLink = document.querySelector('a[href="about.html"]');
+    if (aboutLink) {
+        aboutLink.innerHTML = `<span class="nav-link-icon">🌱</span>${getTranslation('about', language)}`;
+    }
+    
+    // Update follow us link
+    const followLink = document.querySelector('a[href*="instagram"]');
+    if (followLink) {
+        followLink.innerHTML = `<span class="social-icon"><img class="social-icon-img" alt="Instagram" src="https://www.pngkey.com/png/full/283-2831746_insta-icon-instagram.png"></span>${getTranslation('follow_us', language)}`;
+    }
+    
+    // Update main title
+    const mainTitle = document.querySelector('.main-title');
+    if (mainTitle && language === 'en') {
+        mainTitle.textContent = '🌿 What nature has to offer in your region today 🌿';
+    } else if (mainTitle && language === 'de') {
+        mainTitle.textContent = '🌿 Was die Natur heute in deiner Region zu bieten hat 🌿';
+    }
+    
+    // Update form labels
+    const categoryLabel = document.querySelector('.category-selector label');
+    if (categoryLabel) categoryLabel.textContent = getTranslation('what_to_collect', language);
+    
+    const regionLabel = document.querySelector('.country-selector label');
+    if (regionLabel) regionLabel.textContent = getTranslation('region', language);
+    
+    const monthLabel = document.querySelector('.month-selector label');
+    if (monthLabel) monthLabel.textContent = getTranslation('current_month', language);
+    
+    // Update select options
+    updateSelectOptions(language);
+    
+    // Update footer
+    updateFooterForLanguage(language);
+}
+
+// Update select options for language
+function updateSelectOptions(language) {
+    const categorySelect = document.getElementById('category');
+    if (categorySelect) {
+        const options = categorySelect.querySelectorAll('option');
+        options[0].textContent = getTranslation('fruits', language);
+        options[1].textContent = getTranslation('herbs', language);
+        options[2].textContent = getTranslation('nuts', language);
+    }
+    
+    const monthSelect = document.getElementById('month');
+    if (monthSelect) {
+        const options = monthSelect.querySelectorAll('option');
+        const monthKeys = ['january', 'february', 'march', 'april', 'may', 'june', 
+                          'july', 'august', 'september', 'october', 'november', 'december'];
+        options.forEach((option, index) => {
+            option.textContent = getTranslation(monthKeys[index], language);
+        });
+    }
+    
+    const countrySelect = document.getElementById('country');
+    if (countrySelect) {
+        const options = countrySelect.querySelectorAll('option');
+        options[0].textContent = getTranslation('lowland', language);
+        options[1].textContent = getTranslation('coast', language);
+        options[2].textContent = getTranslation('mountains', language);
+    }
+}
+
+// Update banner text
+function updateBannerText(language) {
+    const bannerText = document.querySelector('.banner-text');
+    if (bannerText) {
+        bannerText.textContent = getTranslation('more_features', language);
+    }
+}
+
+// Update footer for language
+function updateFooterForLanguage(language) {
+    const footerText = document.querySelector('.footer p:first-child');
+    if (footerText) {
+        footerText.textContent = getTranslation('made_in_potsdam', language);
+    }
+}
+
+// Translate Supabase content dynamically
+async function translateSupabaseContent(items, targetLanguage) {
+    if (targetLanguage === 'de') {
+        return items; // Return original German content
+    }
+    
+    const translatedItems = [];
+    
+    for (const item of items) {
+        const translatedItem = { ...item };
+        
+        try {
+            // Translate item name
+            if (item.name) {
+                translatedItem.name = await translateText(item.name, targetLanguage);
+            }
+            
+            // Translate description
+            if (item.description) {
+                translatedItem.description = await translateText(item.description, targetLanguage);
+            }
+            
+            // Translate effects
+            if (item.effects) {
+                translatedItem.effects = await translateText(item.effects, targetLanguage);
+            }
+            
+            // Translate how to find
+            if (item.howToFind) {
+                translatedItem.howToFind = await translateText(item.howToFind, targetLanguage);
+            }
+            
+            // Translate lookalikes
+            if (item.lookalikes) {
+                translatedItem.lookalikes = await translateText(item.lookalikes, targetLanguage);
+            }
+            
+            // Translate ripeness period
+            if (item.ripeness) {
+                translatedItem.ripeness = await translateRipenessPeriod(item.ripeness, targetLanguage);
+            }
+            
+        } catch (error) {
+            console.error('Error translating item:', item.name, error);
+            // Keep original text if translation fails
+        }
+        
+        translatedItems.push(translatedItem);
+    }
+    
+    return translatedItems;
+}
+
+// Translate ripeness period (month names)
+async function translateRipenessPeriod(ripeness, targetLanguage) {
+    if (targetLanguage === 'de') {
+        return ripeness;
+    }
+    
+    const monthTranslations = {
+        'Januar': 'January',
+        'Februar': 'February', 
+        'März': 'March',
+        'April': 'April',
+        'Mai': 'May',
+        'Juni': 'June',
+        'Juli': 'July',
+        'August': 'August',
+        'September': 'September',
+        'Oktober': 'October',
+        'November': 'November',
+        'Dezember': 'December',
+        'Ganzjährig': 'Year-round'
+    };
+    
+    let translatedRipeness = ripeness;
+    
+    // Replace German month names with English
+    for (const [german, english] of Object.entries(monthTranslations)) {
+        translatedRipeness = translatedRipeness.replace(new RegExp(german, 'g'), english);
+    }
+    
+    return translatedRipeness;
+}
+
+// Load saved language preference
+function loadLanguagePreference() {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) {
+            languageSelect.value = savedLanguage;
+        }
+        // Update UI for saved language
+        updateUIForLanguage(savedLanguage);
+    }
+}
+
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializePage);
+document.addEventListener('DOMContentLoaded', function() {
+    initializePage();
+    loadLanguagePreference();
+});
 
 // Video functionality
 function loadVideo() {
